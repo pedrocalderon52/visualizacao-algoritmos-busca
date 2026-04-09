@@ -1,6 +1,6 @@
 # Style Guide
 
-Este documento define a linguagem visual deste repositório para que um agente de código mantenha consistência ao criar ou alterar telas, slides, animações e componentes.
+Este documento define a linguagem visual do repositório para manter consistência ao criar ou alterar telas, slides, animações e componentes.
 
 ## Objetivo visual
 
@@ -47,11 +47,11 @@ Use estas cores como base primária:
 
 Cores auxiliares observadas no projeto:
 
-- `#0f172a` para o início do gradiente do título
-- `#334155` para texto em destaque secundário
-- `#818cf8` para nós inativos
-- `#10b981` para elementos de movimento/estado ativo no canvas
-- `#94a3b8` para textos discretos de apoio
+- `#0f172a` para o início do gradiente do título;
+- `#334155` para texto em destaque secundário;
+- `#818cf8` para nós inativos;
+- `#10b981` para elementos de movimento e estado ativo no canvas;
+- `#94a3b8` para textos discretos de apoio.
 
 ## Regras de cor
 
@@ -76,10 +76,14 @@ Regras tipográficas:
 
 Referências de escala atuais:
 
-- `h1`: `5rem`, `700`, `letter-spacing: -1px`
-- `p`: `1.6rem`, `line-height: 1.6`, `400`
-- texto da caixa de destaque: `1.4rem`
+- `h1`: até `5rem`, `700`, `letter-spacing: -1px`
+- `p`: até `1.6rem`, `line-height: 1.6`, `400`
+- texto da caixa de destaque: cerca de `1.4rem`
 - controles auxiliares: `0.85rem`, uppercase, tracking amplo
+
+Observação:
+
+- A escala pode ser reduzida quando necessário para manter o slide íntegro dentro do container principal.
 
 ## Layout e composição
 
@@ -90,16 +94,33 @@ Estrutura base observada:
 - slide com `90vw`, `85vh`, `max-width: 1400px`;
 - borda arredondada ampla (`24px`);
 - padding generoso (`4rem 5rem`);
-- composição em duas colunas;
-- grid com `1fr 1fr` e gap amplo (`5rem`).
+- composição em duas colunas quando fizer sentido;
+- grid com respiro amplo entre texto e visual.
 
 Diretrizes:
 
-- Preservar respiro visual generoso.
-- Evitar densidade alta de informação por slide.
-- Em slides com texto e visual, manter o padrão de duas colunas sempre que fizer sentido.
-- O conteúdo deve parecer equilibrado entre explicação e demonstração visual.
-- Controles e instruções devem ficar discretos no rodapé.
+- preservar respiro visual generoso;
+- evitar densidade alta de informação por slide;
+- em slides com texto e visual, manter o padrão de duas colunas sempre que fizer sentido;
+- o conteúdo deve parecer equilibrado entre explicação e demonstração visual;
+- controles e instruções devem ficar discretos no rodapé;
+- nenhum componente deve vazar para fora do container principal do slide.
+
+## Regra de encaixe
+
+Se houver risco de quebra, overflow, vazamento lateral ou colisão com o rodapé, é permitido:
+
+- reduzir escala tipográfica;
+- compactar espaçamentos;
+- alterar a proporção entre as colunas;
+- reorganizar blocos internos;
+- simplificar a hierarquia visual do slide;
+- trocar um layout rígido por uma composição mais compacta.
+
+Prioridade:
+
+- manter a linguagem visual é importante;
+- manter tudo contido com clareza dentro do slide é obrigatório.
 
 ## Componentes visuais
 
@@ -115,6 +136,7 @@ Diretrizes:
 - Grande, com impacto visual.
 - Gradiente do azul-escuro para indigo.
 - Deve abrir a leitura do slide com clareza imediata.
+- Pode ser compactado ou reorganizado em slides densos.
 
 ### Texto corrido
 
@@ -136,12 +158,13 @@ Função:
 
 - destacar definição, observação importante ou insight-chave.
 
-### Área visual/dinâmica
+### Área visual e dinâmica
 
 - Deve ficar dentro de um container elegante, claro e com borda leve.
-- Pode usar `aspect-ratio`.
+- Pode usar `aspect-ratio`, desde que isso não faça o componente ultrapassar o slide.
 - Pode ter animação de flutuação muito suave.
 - Deve parecer um objeto demonstrativo, não um widget de produtividade.
+- Se a arte for mais textual ou descritiva, o container pode ser mais compacto.
 
 ## Movimento e animação
 
@@ -158,15 +181,15 @@ Padrões permitidos:
 
 Restrições:
 
-- Não usar bounce, elastic exagerado, spin, zoom brusco ou animações chamativas.
-- Não mover o slide inteiro em 3D.
-- Não usar animações contínuas que prejudiquem leitura.
-- Toda animação deve parecer calma, refinada e intencional.
+- não usar bounce, elastic exagerado, spin, zoom brusco ou animações chamativas;
+- não mover o slide inteiro em 3D;
+- não usar animações contínuas que prejudiquem leitura;
+- toda animação deve parecer calma, refinada e intencional.
 
 ## Comportamento interativo
 
 - A navegação deve ser simples, preferencialmente por teclado.
-- O slide ativo é revelado por opacidade/visibilidade.
+- O slide ativo é revelado por opacidade e visibilidade.
 - Objetos internos podem reagir ao mouse de forma sutil.
 - Canvas e elementos gráficos devem responder bem a resize.
 - Efeitos visuais devem preservar nitidez, inclusive com `devicePixelRatio`.
@@ -192,20 +215,22 @@ O comportamento deve comunicar lógica e fluxo, não espetáculo.
 - Preferir uma mensagem principal por slide.
 - Combinar explicação textual com um objeto visual demonstrativo.
 - Usar destaque visual apenas em pontos realmente importantes.
+- Quando um slide ficar denso demais, ajustar a composição antes de aceitar qualquer vazamento visual.
 
 ## O que evitar
 
 - fundos escuros como padrão;
 - excesso de cores concorrendo entre si;
 - cards demais dentro do slide;
-- grids densos;
+- grids densos sem necessidade;
 - sombras pesadas e escuras demais;
 - bordas fortes demais;
 - visual “tech neon”;
 - aparência de dashboard SaaS;
 - excesso de glassmorphism;
 - animações rápidas ou agressivas;
-- tipografia genérica que substitua `Outfit` sem motivo.
+- tipografia genérica que substitua `Outfit` sem motivo;
+- aceitar overflow como solução visual.
 
 ## Regras para um agente de código
 
@@ -217,7 +242,8 @@ Ao editar este repositório, siga estas instruções:
 4. Sempre preserve legibilidade em fundo claro.
 5. Se adicionar animação, use baixa intensidade e função clara.
 6. Se adicionar elemento visual interativo, mantenha o comportamento suave e didático.
-7. Não mude a direção estética do projeto sem solicitação explícita.
+7. Se um componente não couber, adapte layout, hierarquia ou dimensões antes de considerar clipping ou vazamento.
+8. Não mude a direção estética do projeto sem solicitação explícita.
 
 ## Checklist rápido
 
@@ -229,4 +255,5 @@ Antes de concluir uma alteração visual, valide:
 - o conteúdo continua fácil de ler à distância;
 - a animação está sutil;
 - o componente novo combina com o restante do projeto;
+- nenhum bloco está escapando do container principal;
 - nada ganhou aparência genérica de template ou dashboard.
