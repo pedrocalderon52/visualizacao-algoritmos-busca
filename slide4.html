@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consist&ecirc;ncia</title>
+    <title>Dijkstra na Prática</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -15,18 +15,29 @@
     <div class="presentation">
         <section class="slide active" id="slide-consistencia">
             <div class="slide-content dual-layout">
-                <div class="text-content precision-text">
-                    <h1>Consist&ecirc;ncia</h1>
-                    <p><strong>Al&eacute;m da admissibilidade:</strong> uma heur&iacute;stica consistente garante que o custo estimado diminua de forma gradual e l&oacute;gica conforme nos aproximamos do alvo.</p>
-                    <p><strong>Desigualdade triangular:</strong></p>
-                    <div class="formula">
-                        \[h(n) \le c(n, a, n') + h(n')\]
+                <div class="text-content">
+                    <span class="intro-label">Fila de Prioridades</span>
+                    <h1>Dijkstra na Prática</h1>
+                    <p>O algoritmo usa uma fila de prioridades <strong>Q</strong>, organizada pelo custo acumulado <strong>&lambda;(v)</strong>, que mede a distância da raiz até cada vértice.</p>
+                    <div class="code-panel">
+                        <p><span class="code-accent">while</span> Q &ne; &empty;:</p>
+                        <p>&nbsp;&nbsp;u = ExtractMin(Q)</p>
+                        <p>&nbsp;&nbsp;<span class="code-accent">para cada</span> vizinho v de u:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&lambda;(v) = min(&lambda;(v), &lambda;(u) + w(u,v))</p>
+                    </div>
+                    <div class="highlight-box">
+                        <p>A cada iteração, o algoritmo escolhe o vértice mais promissor e relaxa as arestas adjacentes para atualizar os menores custos conhecidos.</p>
                     </div>
                     <p style="color: var(--text-secondary);">O custo estimado do n&oacute; atual n&atilde;o pode ser maior que o custo de um passo para o vizinho somado &agrave; estimativa desse vizinho.</p>
                 </div>
                 <div class="image-content">
-                    <div class="graph-container dynamic-object" id="canvas-container-consistencia">
-                        <canvas id="canvas-consistencia"></canvas>
+                    <div class="visual-panel dynamic-object fit-visual">
+                        <div class="placeholder-figure">
+                            <span class="placeholder-tag">Placeholder de imagem</span>
+                            <h2>Fila ordenada pelo menor custo</h2>
+                            <p>Inserir uma imagem de fila de prioridades ordenando os vértices pelo menor custo acumulado &lambda;(v).</p>
+                            <span class="placeholder-note">A composição ideal destaca o vértice extraído primeiro.</span>
+                        </div>
                     </div>
                 </div>
             </div>

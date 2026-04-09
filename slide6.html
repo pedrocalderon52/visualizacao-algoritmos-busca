@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A* na Pr&aacute;tica</title>
+    <title>A* na Prática</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -16,23 +16,28 @@
         <section class="slide active" id="slide-algoritmos">
             <div class="slide-content dual-layout">
                 <div class="text-content">
-                    <span class="intro-label">Fun&ccedil;&atilde;o de Prioridade</span>
-                    <h1>A* na Pr&aacute;tica</h1>
-                    <p>A estrutura de expans&atilde;o e a fila de prioridades continuam as mesmas do Dijkstra. A diferen&ccedil;a est&aacute; no crit&eacute;rio usado para decidir <strong>qual v&eacute;rtice explorar primeiro</strong>.</p>
+                    <span class="intro-label">Função de Prioridade</span>
+                    <h1>A* na Prática</h1>
+                    <p>A estrutura de expansão e a fila de prioridades continuam as mesmas do Dijkstra. A diferença está no critério usado para decidir <strong>qual vértice explorar primeiro</strong>.</p>
                     <div class="formula-panel">
                         <p class="formula-main">&alpha;(v) = &lambda;(v) + &gamma;(v)</p>
                         <div class="formula-breakdown">
                             <span><strong>&lambda;(v)</strong>: custo real acumulado desde a origem.</span>
-                            <span><strong>&gamma;(v)</strong>: custo estimado at&eacute; o destino final.</span>
+                            <span><strong>&gamma;(v)</strong>: custo estimado até o destino final.</span>
                         </div>
                     </div>
                     <div class="highlight-box">
-                        <p>O A* combina passado e futuro em uma &uacute;nica prioridade, reduzindo desvios irrelevantes sem perder o foco no menor caminho.</p>
+                        <p>O A* combina passado e futuro em uma única prioridade, reduzindo desvios irrelevantes sem perder o foco no menor caminho.</p>
                     </div>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object fit-visual canvas-visual">
-                        <canvas id="astar-formula-canvas" aria-label="Diagrama da f&oacute;rmula alfa igual lambda mais gama"></canvas>
+                    <div class="visual-panel dynamic-object fit-visual">
+                        <div class="placeholder-figure">
+                            <span class="placeholder-tag">Placeholder de imagem</span>
+                            <h2>Fórmula com origem e destino destacados</h2>
+                            <p>Inserir a fórmula &alpha;(v) = &lambda;(v) + &gamma;(v) em destaque, com setas indicando a parte do custo já percorrido e a parte estimada até o alvo.</p>
+                            <span class="placeholder-note">O espaço está preparado para uma arte explicativa mais visual.</span>
+                        </div>
                     </div>
                 </div>
             </div>
