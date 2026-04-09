@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Grafo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <h1>Grafo</h1>
+                    <p>Objetos matemáticos que representam relações entre elementos por meio de <strong>vértices (ou nós)</strong> e <strong>arestas</strong>.</p>
+                    <div class="highlight-box">
+                        <p>Um vértice pode ser conectado a outro por meio de arestas, o que os torna <strong>vizinhos</strong>.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object">
+                        <canvas id="graph-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
