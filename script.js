@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function navigateToRelativeSlide(step) {
         const path = window.location.pathname;
-        const currentPage = path.substring(path.lastIndexOf('/') + 1) || "slide1.html";
+        const currentPage = path.substring(path.lastIndexOf('/') + 1) || "slide_busca_comparacao.html";
         const currentIndex = slidePages.findIndex(page => currentPage === page || currentPage.includes(page));
 
         if (currentIndex === -1) return;
