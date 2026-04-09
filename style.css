@@ -1,0 +1,228 @@
+:root {
+    --bg-color: #f0f4f8; /* Soft light gray/blue background */
+    --slide-bg: #ffffff; /* Clean white slide */
+    --text-primary: #1e293b; /* Slate 800 */
+    --text-secondary: #64748b; /* Slate 500 */
+    --accent-color: #4f46e5; /* Sophisticated Indigo */
+    --accent-glow: rgba(79, 70, 229, 0.08); /* Soft indigo highlight */
+    --glass-border: rgba(0, 0, 0, 0.05); /* Soft border */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.04), transparent 35%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.04), transparent 35%),
+                var(--bg-color);
+}
+
+.presentation {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* Remover perspectiva para manter o slide plano/estático */
+}
+
+.slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Fixado, sem movimentação 3D da estrutura */
+    width: 90vw;
+    height: 85vh;
+    max-width: 1400px;
+    background: var(--slide-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 4rem 5rem;
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.1), 0 10px 20px -5px rgba(0,0,0,0.04);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.dual-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    height: 100%;
+    align-items: center;
+}
+
+/* Animações de entrada dos elementos internos (Objetos Dinâmicos) */
+.slide.active .text-content h1 {
+    animation: fadeInUp 0.8s ease backwards;
+    animation-delay: 0.1s;
+}
+
+.slide.active .text-content p:not(.highlight-box p) {
+    animation: fadeInUp 0.8s ease backwards;
+    animation-delay: 0.3s;
+}
+
+.slide.active .highlight-box {
+    animation: fadeInUp 0.8s ease backwards;
+    animation-delay: 0.5s;
+}
+
+.slide.active .image-content {
+    animation: fadeInRight 0.8s ease backwards;
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.text-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-content h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #0f172a 0%, #4f46e5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.text-content p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    font-weight: 400; /* Removido o thin anterior para melhor leitura no modo claro */
+}
+
+.text-content strong {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.highlight-box {
+    background: var(--accent-glow);
+    border: 1px solid rgba(79, 70, 229, 0.15);
+    border-left: 4px solid var(--accent-color);
+    padding: 2rem;
+    border-radius: 0 16px 16px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efeito sutil passando pela caixa */
+.highlight-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+    animation: shimmer 6s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+.highlight-box p {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #334155;
+    position: relative; 
+    z-index: 1;
+}
+
+.image-content {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Estrutura flexível para objetos dinâmicos guiados por JS */
+.dynamic-object {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+
+.graph-container {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 20px;
+    background: #f8fafc;
+    border: 1px dashed rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+    /* Objeto flutua suavemente para ser dinâmico */
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.graph-container canvas {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+}
+
+.controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
