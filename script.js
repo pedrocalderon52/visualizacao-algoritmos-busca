@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
+    const slidePages = [
+        "slide_busca_comparacao.html",
+        "slide_grafo.html",
+        "slide_heuristica.html",
+        "slide_admissibilidade.html",
+        "slide_consistencia.html",
+        "slide_metricas.html",
+        "slide_dinamismo.html",
+        "slide_direcionamento.html",
+        "slide_redes_densas.html"
+    ];
 
     function navigateToRelativeSlide(step) {
         const path = window.location.pathname;
@@ -49,6 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
             showSlide(currentSlide - 1);
         }
     }
+    // Antiga navegação removida
+    // Configuração para navegar usando botões do mouse (Esquerdo = Voltar, Direito = Avançar)
+    document.addEventListener('mousedown', (e) => {
+        // Ignora caso o clique seja dentro de um elemento interativo
+        if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
+
+        if (e.button === 0) {
+            navigateToRelativeSlide(-1);
+        } else if (e.button === 2) {
+            navigateToRelativeSlide(1);
+        }
+    });
+
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
+        e.preventDefault();
+    });
     
     // Efeito Paralaxe apenas nos objetos INTERNOS (dinâmicos), slide em si fica estático
     document.addEventListener('mousemove', (e) => {
@@ -56,11 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!slideActive) return;
 
         const dynamicObjects = slideActive.querySelectorAll('.dynamic-object');
-        
-        // Calcula a posição do mouse relativa ao centro da tela
-        const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-        const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-        
+
+        // Calcula a posição do mouse relativa ao centro da tela, com peso reduzido para menos movimento
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 100;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 100;
         dynamicObjects.forEach(obj => {
             // Aplica translação aos objetos para parecerem reagir ao mouse
             obj.style.transform = `translate(${xAxis}px, ${yAxis}px)`;
@@ -610,8 +635,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ctxM.clearRect(0, 0, w, h);
             if(t < 1) t += 0.02;
 
-            const startX = w * 0.2, startY = h * 0.8;
-            const endX = w * 0.8, endY = h * 0.2;
+            // Assimetria nas coordenadas garante que a métrica de Chebyshev forme uma "quina" visível,
+            // não coincidindo acidentalmente com a linha reta perfeita do Euclidiano
+            const startX = w * 0.15, startY = h * 0.85;
+            const endX = w * 0.85, endY = h * 0.45;
 
             // Draw Grid
             ctxM.strokeStyle = "rgba(0,0,0,0.05)";
