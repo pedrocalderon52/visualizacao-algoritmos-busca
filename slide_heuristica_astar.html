@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Heur&iacute;stica A*</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active fit-slide" id="slide-heuristica-astar">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <span class="intro-label">Busca Guiada</span>
+                    <h1>A Heur&iacute;stica A*</h1>
+                    <p>A* generaliza o Dijkstra para acelerar a busca por caminhos m&iacute;nimos, adicionando uma <strong>estimativa do qu&atilde;o perto estamos do destino</strong>.</p>
+                    <ul class="bullet-list">
+                        <li>A prioridade deixa de depender apenas do custo j&aacute; percorrido.</li>
+                        <li>A heur&iacute;stica orienta a expans&atilde;o para regi&otilde;es mais promissoras do grafo.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p>Aplica&ccedil;&atilde;o cl&aacute;ssica: IA de jogos eletr&ocirc;nicos, calculando rotas din&acirc;micas at&eacute; alvos que podem mudar de posi&ccedil;&atilde;o.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object" id="canvas-container-heuristica-astar">
+                        <canvas id="astar-heuristic-canvas" aria-label="Mapa em grade ilustrando a heur&iacute;stica A* com dist&acirc;ncia em linha reta at&eacute; o alvo"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

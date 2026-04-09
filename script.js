@@ -2,7 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const slidePages = [
         "slide_busca_comparacao.html",
         "slide_grafo.html",
+        "slide_dijkstra.html",
+        "slide_dijkstra_pratica.html",
         "slide_heuristica.html",
+        "slide_heuristica_astar.html",
         "slide_admissibilidade.html",
         "slide_consistencia.html",
         "slide_metricas.html",

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstra na Pr&aacute;tica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active fit-slide" id="slide-dijkstra-pratica">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <span class="intro-label">Fila de Prioridades</span>
+                    <h1>Dijkstra na Pr&aacute;tica</h1>
+                    <p>O algoritmo usa uma fila de prioridades <strong>Q</strong>, organizada pelo custo acumulado <strong>&lambda;(v)</strong>, que mede a dist&acirc;ncia da raiz at&eacute; cada v&eacute;rtice.</p>
+                    <div class="code-panel">
+                        <p><span class="code-accent">while</span> Q &ne; &empty;:</p>
+                        <p>&nbsp;&nbsp;u = ExtractMin(Q)</p>
+                        <p>&nbsp;&nbsp;<span class="code-accent">para cada</span> vizinho v de u:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&lambda;(v) = min(&lambda;(v), &lambda;(u) + w(u,v))</p>
+                    </div>
+                    <div class="highlight-box">
+                        <p>A cada itera&ccedil;&atilde;o, o algoritmo escolhe o v&eacute;rtice mais promissor e relaxa as arestas adjacentes para atualizar os menores custos conhecidos.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object" id="canvas-container-dijkstra-pratica">
+                        <canvas id="dijkstra-priority-canvas" aria-label="Fila de prioridades ordenada pelo menor custo acumulado lambda(v)"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
