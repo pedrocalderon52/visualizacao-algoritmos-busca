@@ -121,6 +121,14 @@ Prioridade:
 1. Manter a clareza total do conteúdo sem vazamentos (adapte o CSS ou HTML se necessário).
 2. Manter a coerência com a linguagem visual refinada.
 
+## Interação e Navegação
+
+**Padrão de Navegação com Mouse:**
+A fim de manter uma experiência de navegação consistente, intuitiva e sem atritos ao apresentar o material:
+- **Botão Esquerdo ("Left-click / button 0"):** Voltar para o slide anterior (-1).
+- **Botão Direito ("Right-click / button 2"):** Avançar para o próximo slide (+1).
+*Nota:* Eventos de clique para navegação devem ser ignorados se o ponteiro estiver ativamente interagindo com objetos de tela (como `canvas`, botões, seletores, e interfaces da área `.controls` etc.).
+
 ## Componentes visuais
 
 ### Slide

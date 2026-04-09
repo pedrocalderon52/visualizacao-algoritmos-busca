@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Lista ordenada dos arquivos HTML que formam a apresentação
     const slidePages = [
-        "slide1.html",
-        "slide2.html",
+        "slide_busca_comparacao.html",
+        "slide_grafo.html",
         "slide_heuristica.html",
-        "slide3.html",
-        "slide4.html",
-        "slide5.html",
-        "slide6.html",
-        "slide7.html",
-        "slide8.html"
+        "slide_admissibilidade.html",
+        "slide_consistencia.html",
+        "slide_metricas.html",
+        "slide_dinamismo.html",
+        "slide_direcionamento.html",
+        "slide_redes_densas.html"
     ];
 
     function navigateToRelativeSlide(step) {
@@ -36,63 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /*
-    function showSlide(index) {
-        if (index < 0) index = 0;
-        if (index >= slides.length) index = slides.length - 1;
-
-        slides.forEach(slide => slide.classList.remove('active'));
-
-        // Reflow rápido para reiniciar as animações CSS
-        void slides[index].offsetWidth;
-
-        slides[index].classList.add('active');
-        currentSlide = index;
-    }
-
-    function nextSlide() {
-        if (slides.length > 1 && currentSlide < slides.length - 1) {
-            showSlide(currentSlide + 1);
-            return;
-        }
-
-        if (currentPageIndex !== -1 && currentPageIndex < slidePages.length - 1) {
-            window.location.href = slidePages[currentPageIndex + 1];
-    // Configuração para navegar usando botões do mouse
-    document.addEventListener('mousedown', (e) => {
-        // Ignora caso o clique seja dentro de um elemento interativo
-        if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
-
-        if (e.button === 0) { // Esquerdo = Voltar
-            navigateToRelativeSlide(-1);
-        } else if (e.button === 2) { // Direito = Avançar
-            navigateToRelativeSlide(1);
-        }
-    });
-
-    function prevSlide() {
-        if (slides.length > 1 && currentSlide > 0) {
-            showSlide(currentSlide - 1);
-            return;
-        }
-
-        if (currentPageIndex > 0) {
-            window.location.href = slidePages[currentPageIndex - 1];
-        }
-    }
-
-    // Desativa o menu de contexto padrão no botão direito (exceto sobre Canvas interativo)
-    */
-
-    // ConfiguraÃ§Ã£o para navegar usando botÃµes do mouse
+    // Antiga navegação removida
+    // Configuração para navegar usando botões do mouse (Esquerdo = Voltar, Direito = Avançar)
     document.addEventListener('mousedown', (e) => {
         // Ignora caso o clique seja dentro de um elemento interativo
         if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
 
         if (e.button === 0) {
-            navigateToRelativeSlide(1);
-        } else if (e.button === 2) {
             navigateToRelativeSlide(-1);
+        } else if (e.button === 2) {
+            navigateToRelativeSlide(1);
         }
     });
 
@@ -108,15 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dynamicObjects = slideActive.querySelectorAll('.dynamic-object');
 
-        // Calcula a posição do mouse relativa ao centro da tela
-        const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-        const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-
-        
         // Calcula a posição do mouse relativa ao centro da tela, com peso reduzido para menos movimento
         const xAxis = (window.innerWidth / 2 - e.pageX) / 100;
         const yAxis = (window.innerHeight / 2 - e.pageY) / 100;
-        
         dynamicObjects.forEach(obj => {
             // Aplica translação aos objetos para parecerem reagir ao mouse
             obj.style.transform = `translate(${xAxis}px, ${yAxis}px)`;
