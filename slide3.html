@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Admissibilidade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active" id="slide-admissibilidade">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <h1>Admissibilidade</h1>
+                    <p><strong>Definição:</strong> Uma heurística é admissível se ela <strong>nunca superestima</strong> o custo real.</p>
+                    <p><strong>Critério Matemático:</strong></p>
+                    <div class="formula">
+                        \[h(n) \le h^*(n)\]
+                    </div>
+                    <p><strong>Por que importa?</strong> Se o algoritmo for "pessimista", ele pode ignorar a rota perfeita por achar que ela será cara demais, aceitando uma solução subótima.</p>
+                    <div class="highlight-box">
+                        <p><strong>Insight:</strong> Para garantir a admissibilidade, geralmente "relaxamos" o problema (ex: ignorar obstáculos para calcular a distância).</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object admit-container" id="canvas-container-admissibilidade" style="transition: border-color 0.3s, box-shadow 0.3s;">
+                        <canvas id="canvas-admissibilidade"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

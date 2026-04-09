@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Consistência</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active" id="slide-consistencia">
+            <div class="slide-content dual-layout">
+                <div class="text-content precision-text">
+                    <h1>Consistência</h1>
+                    <p><strong>Além da Admissibilidade:</strong> Uma heurística consistente garante que o custo estimado diminua de forma gradual e lógica conforme nos aproximamos do alvo.</p>
+                    <p><strong>Desigualdade Triangular:</strong></p>
+                    <div class="formula">
+                        \[h(n) \le c(n, a, n') + h(n')\]
+                    </div>
+                    <p style="color: var(--text-secondary);">O custo estimado do nó atual não pode ser maior que o custo de um passo para o vizinho somado à estimativa desse vizinho.</p>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object" id="canvas-container-consistencia">
+                        <canvas id="canvas-consistencia"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

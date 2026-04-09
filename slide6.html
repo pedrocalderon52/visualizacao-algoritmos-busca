@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Algoritmos e Dinamismo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active" id="slide-algoritmos">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <h1>Algoritmos de Busca</h1>
+                    <p style="color: var(--accent-color); font-weight: 600; margin-bottom: 1rem;">Foco: Robótica e Ambientes Mutáveis.</p>
+                    <p><strong>Busca Gulosa (Greedy):</strong> Foca apenas em \(h(n)\). É rápida, mas míope — pode ficar presa em obstáculos em formato de "U".</p>
+                    <p><strong>D* Lite:</strong> Essencial para sistemas autônomos. Diferente do A*, ele não reinicia a busca quando o ambiente muda; ele atualiza as estimativas localmente.</p>
+                    <div class="highlight-box">
+                        <p>O D* Lite é a base para a navegação de agentes que operam em ambientes desconhecidos ou dinâmicos.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object" id="canvas-container-algoritmos">
+                        <canvas id="canvas-algoritmos"></canvas>
+                        <div class="canvas-overlay">Clique para adicionar obstáculos</div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

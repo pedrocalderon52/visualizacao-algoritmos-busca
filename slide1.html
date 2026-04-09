@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Busca Cega vs. Busca Heurística</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active" id="slide1">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <h1>Busca Cega vs. Busca Heurística</h1>
+                    <p><strong>Busca Cega (Uninformed):</strong> Exploração por força bruta. O algoritmo expande em todas as direções sem prioridade, resultando em desperdício de memória e tempo.</p>
+                    <p><strong>Busca Heurística (Informed):</strong> Introduz o "conhecimento de domínio". É uma forma inteligente de guiar o algoritmo através de estimativas.</p>
+                    <div class="highlight-box">
+                        <p>Heurística não é uma solução exata, mas um "atalho mental" que prioriza caminhos promissores.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object" id="canvas-container-1">
+                        <canvas id="canvas-slide1"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
