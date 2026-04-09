@@ -742,4 +742,289 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         setTimeout(drawD, 300);
     }
+    const priorityCanvas = document.getElementById('priority-queue-canvas');
+    if (priorityCanvas) {
+        const ctx = priorityCanvas.getContext('2d');
+        let width = 0;
+        let height = 0;
+        let time = 0;
+
+        const queueItems = [
+            { vertex: 'B', lambda: '3', active: true },
+            { vertex: 'D', lambda: '5', active: false },
+            { vertex: 'E', lambda: '7', active: false },
+            { vertex: 'F', lambda: '9', active: false }
+        ];
+
+        function resizePriorityCanvas() {
+            const rect = priorityCanvas.parentElement.getBoundingClientRect();
+            const ratio = window.devicePixelRatio || 1;
+
+            priorityCanvas.width = rect.width * ratio;
+            priorityCanvas.height = rect.height * ratio;
+
+            width = rect.width;
+            height = rect.height;
+
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function roundedRect(x, y, w, h, r) {
+            const radius = Math.min(r, w / 2, h / 2);
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + w - radius, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+            ctx.lineTo(x + w, y + h - radius);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+            ctx.lineTo(x + radius, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        function drawLabel(text, x, y, options = {}) {
+            const {
+                font = '600 14px Outfit',
+                color = '#4f46e5',
+                align = 'left',
+                baseline = 'middle'
+            } = options;
+
+            ctx.font = font;
+            ctx.fillStyle = color;
+            ctx.textAlign = align;
+            ctx.textBaseline = baseline;
+            ctx.fillText(text, x, y);
+        }
+
+        function drawCard(x, y, w, h, item, pulse) {
+            const glow = item.active ? 18 + pulse * 12 : 0;
+            const fill = item.active ? 'rgba(79, 70, 229, 0.14)' : 'rgba(255, 255, 255, 0.92)';
+            const border = item.active ? '#4f46e5' : 'rgba(148, 163, 184, 0.4)';
+
+            ctx.save();
+            ctx.shadowColor = item.active ? 'rgba(79, 70, 229, 0.18)' : 'transparent';
+            ctx.shadowBlur = glow;
+            roundedRect(x, y, w, h, 20);
+            ctx.fillStyle = fill;
+            ctx.fill();
+            ctx.restore();
+
+            roundedRect(x, y, w, h, 20);
+            ctx.lineWidth = item.active ? 2.5 : 1.5;
+            ctx.strokeStyle = border;
+            ctx.stroke();
+
+            roundedRect(x + 16, y + 16, 56, h - 32, 14);
+            ctx.fillStyle = item.active ? '#4f46e5' : 'rgba(79, 70, 229, 0.08)';
+            ctx.fill();
+
+            drawLabel(item.vertex, x + 44, y + h / 2, {
+                font: '700 22px Outfit',
+                color: item.active ? '#ffffff' : '#4f46e5',
+                align: 'center'
+            });
+
+            drawLabel('λ(v)', x + 96, y + 26, {
+                font: '600 12px Outfit',
+                color: '#64748b'
+            });
+
+            drawLabel(item.lambda, x + 96, y + h / 2 + 8, {
+                font: '700 28px Outfit',
+                color: '#0f172a'
+            });
+
+            if (item.active) {
+                roundedRect(x + w - 128, y + 18, 104, 28, 14);
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+                ctx.fill();
+                drawLabel('menor custo', x + w - 76, y + 32, {
+                    font: '700 11px Outfit',
+                    color: '#059669',
+                    align: 'center'
+                });
+            }
+        }
+
+        function animatePriorityQueue() {
+            if (!width || !height) resizePriorityCanvas();
+            ctx.clearRect(0, 0, width, height);
+
+            time += 0.018;
+            const pulse = (Math.sin(time) + 1) / 2;
+            const floatOffset = Math.sin(time * 0.6) * 4;
+
+            const queuePanel = {
+                x: width * 0.43,
+                y: height * 0.16,
+                w: width * 0.47,
+                h: height * 0.68
+            };
+
+            const extractPanel = {
+                x: width * 0.08,
+                y: height * 0.28,
+                w: width * 0.24,
+                h: height * 0.28
+            };
+
+            const topCardY = queuePanel.y + 54 + floatOffset;
+            const cardHeight = 78;
+            const gap = 18;
+
+            ctx.save();
+            const bgGradient = ctx.createLinearGradient(0, 0, width, height);
+            bgGradient.addColorStop(0, 'rgba(255, 255, 255, 0.96)');
+            bgGradient.addColorStop(1, 'rgba(238, 244, 255, 0.95)');
+            roundedRect(18, 18, width - 36, height - 36, 24);
+            ctx.fillStyle = bgGradient;
+            ctx.fill();
+            ctx.restore();
+
+            roundedRect(queuePanel.x, queuePanel.y, queuePanel.w, queuePanel.h, 28);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.28)';
+            ctx.stroke();
+
+            roundedRect(extractPanel.x, extractPanel.y, extractPanel.w, extractPanel.h, 24);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.28)';
+            ctx.stroke();
+
+            roundedRect(queuePanel.x + 22, queuePanel.y + 18, 104, 28, 14);
+            ctx.fillStyle = 'rgba(79, 70, 229, 0.1)';
+            ctx.fill();
+            drawLabel('Fila Q', queuePanel.x + 74, queuePanel.y + 32, {
+                font: '700 12px Outfit',
+                color: '#4f46e5',
+                align: 'center'
+            });
+
+            drawLabel('ordenada por menor λ(v)', queuePanel.x + queuePanel.w - 28, queuePanel.y + 32, {
+                font: '600 13px Outfit',
+                color: '#64748b',
+                align: 'right'
+            });
+
+            drawLabel('1º extraído', extractPanel.x + extractPanel.w / 2, extractPanel.y - 24, {
+                font: '700 13px Outfit',
+                color: '#059669',
+                align: 'center'
+            });
+
+            queueItems.forEach((item, index) => {
+                const x = queuePanel.x + 22 - (item.active ? 18 + pulse * 8 : 0);
+                const y = topCardY + index * (cardHeight + gap);
+                const w = queuePanel.w - 44 + (item.active ? 18 : 0);
+
+                drawCard(x, y, w, cardHeight, item, pulse);
+
+                drawLabel(`${index + 1}`, queuePanel.x + queuePanel.w - 18, y + cardHeight / 2, {
+                    font: '700 13px Outfit',
+                    color: '#94a3b8',
+                    align: 'right'
+                });
+            });
+
+            roundedRect(extractPanel.x + 16, extractPanel.y + 18, extractPanel.w - 32, extractPanel.h - 36, 20);
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.08)';
+            ctx.fill();
+
+            ctx.save();
+            ctx.shadowColor = 'rgba(16, 185, 129, 0.22)';
+            ctx.shadowBlur = 22 + pulse * 12;
+            roundedRect(extractPanel.x + 32, extractPanel.y + 42, extractPanel.w - 64, 94, 22);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
+            ctx.fill();
+            ctx.restore();
+
+            roundedRect(extractPanel.x + 32, extractPanel.y + 42, extractPanel.w - 64, 94, 22);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#10b981';
+            ctx.stroke();
+
+            roundedRect(extractPanel.x + 48, extractPanel.y + 58, 60, 62, 16);
+            ctx.fillStyle = '#10b981';
+            ctx.fill();
+
+            drawLabel(queueItems[0].vertex, extractPanel.x + 78, extractPanel.y + 90, {
+                font: '700 26px Outfit',
+                color: '#ffffff',
+                align: 'center'
+            });
+
+            drawLabel('u', extractPanel.x + extractPanel.w - 86, extractPanel.y + 72, {
+                font: '700 13px Outfit',
+                color: '#059669'
+            });
+
+            drawLabel(`λ(v) = ${queueItems[0].lambda}`, extractPanel.x + extractPanel.w - 86, extractPanel.y + 102, {
+                font: '700 24px Outfit',
+                color: '#0f172a'
+            });
+
+            drawLabel('ExtractMin(Q)', width * 0.34, queuePanel.y + 56, {
+                font: '700 13px Outfit',
+                color: '#4f46e5',
+                align: 'center'
+            });
+
+            const arrowStartX = extractPanel.x + extractPanel.w + 18;
+            const arrowStartY = extractPanel.y + extractPanel.h / 2;
+            const arrowEndX = queuePanel.x - 16;
+            const arrowEndY = topCardY + cardHeight / 2;
+
+            ctx.beginPath();
+            ctx.moveTo(arrowStartX, arrowStartY);
+            ctx.bezierCurveTo(
+                width * 0.35,
+                arrowStartY - 34,
+                width * 0.38,
+                arrowEndY - 14,
+                arrowEndX,
+                arrowEndY
+            );
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = 'rgba(79, 70, 229, 0.4)';
+            ctx.stroke();
+
+            const travel = pulse;
+            const pointX = arrowStartX + (arrowEndX - arrowStartX) * travel;
+            const pointY = arrowStartY + (arrowEndY - arrowStartY) * travel;
+            ctx.beginPath();
+            ctx.arc(pointX, pointY, 5.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#10b981';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(arrowEndX, arrowEndY);
+            ctx.lineTo(arrowEndX - 12, arrowEndY - 8);
+            ctx.moveTo(arrowEndX, arrowEndY);
+            ctx.lineTo(arrowEndX - 12, arrowEndY + 8);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = 'rgba(79, 70, 229, 0.5)';
+            ctx.stroke();
+
+            drawLabel('frente da fila', queuePanel.x + 48, topCardY - 18, {
+                font: '600 12px Outfit',
+                color: '#64748b'
+            });
+
+            requestAnimationFrame(animatePriorityQueue);
+        }
+
+        window.addEventListener('resize', resizePriorityCanvas);
+
+        setTimeout(() => {
+            resizePriorityCanvas();
+            animatePriorityQueue();
+        }, 300);
+    }
 });
