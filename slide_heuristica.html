@@ -2,8 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consist&ecirc;ncia</title>
+    <title>A Função Heurística</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -13,20 +12,22 @@
 </head>
 <body>
     <div class="presentation">
-        <section class="slide active" id="slide-consistencia">
+        <section class="slide active" id="slide-heuristica">
             <div class="slide-content dual-layout">
-                <div class="text-content precision-text">
-                    <h1>Consist&ecirc;ncia</h1>
-                    <p><strong>Al&eacute;m da admissibilidade:</strong> uma heur&iacute;stica consistente garante que o custo estimado diminua de forma gradual e l&oacute;gica conforme nos aproximamos do alvo.</p>
-                    <p><strong>Desigualdade triangular:</strong></p>
+                <div class="text-content">
+                    <h1>A Função Heurística \(h(n)\)</h1>
+                    <p><strong>O Nó (\(n\)):</strong> Representa um estado específico ou coordenada no mapa de busca.</p>
+                    <p><strong>A Função \(h(n)\):</strong> Estima o custo ideal do nó atual até o objetivo.</p>
+                    <p><strong>A Função de Avaliação:</strong> No A*, combinamos o passado e o futuro:</p>
                     <div class="formula">
-                        \[h(n) \le c(n, a, n') + h(n')\]
+                        \[f(n) = g(n) + h(n)\]
                     </div>
-                    <p style="color: var(--text-secondary);">O custo estimado do n&oacute; atual n&atilde;o pode ser maior que o custo de um passo para o vizinho somado &agrave; estimativa desse vizinho.</p>
+                    <p>Onde \(g(n)\) é o custo real acumulado e \(h(n)\) é o palpite adiante.</p>
                 </div>
                 <div class="image-content">
-                    <div class="graph-container dynamic-object" id="canvas-container-consistencia">
-                        <canvas id="canvas-consistencia"></canvas>
+                    <div class="graph-container dynamic-object interactable-container" id="canvas-container-heuristica" style="position: relative;">
+                        <canvas id="canvas-heuristica"></canvas>
+                        <div id="tooltip-heuristica" class="tooltip">h(n) = 4.2</div>
                     </div>
                 </div>
             </div>

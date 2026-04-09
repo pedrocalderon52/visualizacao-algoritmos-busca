@@ -39,7 +39,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Fixado, sem movimentação 3D da estrutura */
+    transform: translate(-50%, calc(-50% + 20px));
     width: 90vw;
     height: 85vh;
     max-width: 1400px;
@@ -51,12 +51,13 @@ body {
     opacity: 0;
     visibility: hidden;
     overflow: hidden;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .slide.active {
     opacity: 1;
     visibility: visible;
+    transform: translate(-50%, -50%);
 }
 
 .slide-content {
@@ -65,8 +66,8 @@ body {
 
 .dual-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: 4rem;
+    grid-template-columns: 1.15fr 0.85fr; /* Give more space to text */
+    gap: 3rem; /* Reduced from 5rem */
     height: 100%;
     align-items: center;
 }
@@ -122,9 +123,9 @@ body {
 }
 
 .text-content h1 {
-    font-size: 5rem;
+    font-size: 3.2rem; /* Reduced from 5rem */
     font-weight: 700;
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem; /* Reduced from 2rem */
     background: linear-gradient(135deg, #0f172a 0%, #4f46e5 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -132,10 +133,10 @@ body {
 }
 
 .text-content p {
-    font-size: 1.6rem;
+    font-size: 1.25rem; /* Reduced from 1.6rem */
     line-height: 1.6;
     color: var(--text-secondary);
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem; /* Reduced from 2.5rem */
     font-weight: 400; /* Removido o thin anterior para melhor leitura no modo claro */
 }
 
@@ -171,7 +172,7 @@ body {
     background: var(--accent-glow);
     border: 1px solid rgba(79, 70, 229, 0.15);
     border-left: 4px solid var(--accent-color);
-    padding: 2rem;
+    padding: 1.5rem; /* Reduced from 2rem */
     border-radius: 0 16px 16px 0;
     position: relative;
     overflow: hidden;
@@ -197,7 +198,7 @@ body {
 
 .highlight-box p {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.15rem; /* Reduced from 1.4rem */
     color: #334155;
     position: relative; 
     z-index: 1;
@@ -554,7 +555,8 @@ body {
 
 .graph-container {
     width: 100%;
-    aspect-ratio: 4/3;
+    height: 55vh; /* Responsive height instead of thick aspect-ratio */
+    min-height: 350px;
     border-radius: 20px;
     background: #f8fafc;
     border: 1px dashed rgba(0,0,0,0.15);
@@ -570,7 +572,7 @@ body {
 
 @keyframes float {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-4px); } /* Reduced from -15px */
     100% { transform: translateY(0px); }
 }
 
@@ -592,6 +594,90 @@ body {
     letter-spacing: 3px;
 }
 
+/* Formula Style */
+.formula {
+    font-size: 1.5rem; /* Reduced from 1.8rem */
+    color: var(--text-primary);
+    margin: 1rem 0; /* Reduced from 1.5rem */
+    text-align: center;
+    background: var(--accent-glow);
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Tooltip for Heurística */
+.tooltip {
+    position: absolute;
+    background: var(--text-primary);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 1rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: translate(-50%, -150%);
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Slide 4 Precision Text */
+.precision-text p {
+    color: var(--text-secondary);
+}
+
+/* Metrics Grid Slide 5 */
+.flex-col {
+    flex-direction: column;
+}
+.metrics-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+.metric-item h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+.canvas-buttons {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+.metric-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--accent-color);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+.metric-btn.active, .metric-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+/* Slide 6 Overlay */
+.canvas-overlay {
+    position: absolute;
+    top: 20px;
+    background: rgba(15, 23, 42, 0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    pointer-events: none;
+    z-index: 10;
+}
 @media (max-width: 1024px) {
     body {
         height: auto;

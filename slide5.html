@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Heur&iacute;stica A*</title>
+    <title>M&eacute;tricas de Dist&acirc;ncia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -11,28 +11,38 @@
 </head>
 <body>
     <div class="presentation">
-        <section class="slide active">
+        <section class="slide active" id="slide-metricas">
             <div class="slide-content dual-layout">
                 <div class="text-content">
-                    <span class="intro-label">Busca Guiada</span>
-                    <h1>A Heur&iacute;stica A*</h1>
-                    <p>A* generaliza o Dijkstra para acelerar a busca por caminhos m&iacute;nimos, adicionando uma <strong>estimativa do qu&atilde;o perto estamos do destino</strong>.</p>
-                    <ul class="bullet-list">
-                        <li>A prioridade deixa de depender apenas do custo j&aacute; percorrido.</li>
-                        <li>A heur&iacute;stica orienta a expans&atilde;o para regi&otilde;es mais promissoras do grafo.</li>
-                    </ul>
-                    <div class="highlight-box">
-                        <p>Aplica&ccedil;&atilde;o cl&aacute;ssica: IA de jogos eletr&ocirc;nicos, calculando rotas din&acirc;micas at&eacute; alvos que podem mudar de posi&ccedil;&atilde;o.</p>
+                    <h1>M&eacute;tricas de Dist&acirc;ncia</h1>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <h3>Manhattan</h3>
+                            <p>Soma das dist&acirc;ncias absolutas. Ideal para grids urbanos ou labirintos de 4 dire&ccedil;&otilde;es.</p>
+                        </div>
+                        <div class="metric-item">
+                            <h3>Euclidiana</h3>
+                            <p>Dist&acirc;ncia em linha reta ("voo de p&aacute;ssaro"). Padr&atilde;o para drones e espa&ccedil;os cont&iacute;nuos.</p>
+                        </div>
+                        <div class="metric-item">
+                            <h3>Chebyshev</h3>
+                            <p>Considera diagonais com o mesmo custo das retas. Ideal para movimentos tipo "rei" no xadrez.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object canvas-visual">
-                        <canvas id="astar-heuristic-canvas" aria-label="Mapa em grade com origem, alvo e heurística do A estrela"></canvas>
+                    <div class="graph-container dynamic-object flex-col" id="canvas-container-metricas">
+                        <canvas id="canvas-metricas"></canvas>
+                        <div class="canvas-buttons">
+                            <button class="metric-btn active" data-metric="manhattan">Manhattan</button>
+                            <button class="metric-btn" data-metric="euclidiana">Euclidiana</button>
+                            <button class="metric-btn" data-metric="chebyshev">Chebyshev</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="controls">
-                <span>Slide 5</span>
+                <span>Use as setas &larr; e &rarr; para navegar</span>
             </div>
         </section>
     </div>

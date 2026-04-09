@@ -2,37 +2,38 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algoritmo de Dijkstra</title>
+    <title>Admissibilidade</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
     <div class="presentation">
-        <section class="slide active fit-slide">
+        <section class="slide active" id="slide-admissibilidade">
             <div class="slide-content dual-layout">
                 <div class="text-content">
-                    <span class="intro-label">Caminhos M&iacute;nimos</span>
-                    <h1>Algoritmo de Dijkstra</h1>
-                    <p>M&eacute;todo projetado para encontrar <strong>caminhos m&iacute;nimos</strong> em grafos ponderados, onde cada aresta possui um custo associado.</p>
-                    <ul class="bullet-list">
-                        <li>Expande primeiro os ramos com menor custo acumulado a partir do v&eacute;rtice de origem.</li>
-                        <li>Reaproveita subcaminhos j&aacute; otimizados para construir solu&ccedil;&otilde;es maiores com consist&ecirc;ncia.</li>
-                    </ul>
+                    <h1>Admissibilidade</h1>
+                    <p><strong>Definição:</strong> Uma heurística é admissível se ela <strong>nunca superestima</strong> o custo real.</p>
+                    <p><strong>Critério Matemático:</strong></p>
+                    <div class="formula">
+                        \[h(n) \le h^*(n)\]
+                    </div>
+                    <p><strong>Por que importa?</strong> Se o algoritmo for "pessimista", ele pode ignorar a rota perfeita por achar que ela será cara demais, aceitando uma solução subótima.</p>
                     <div class="highlight-box">
-                        <p>Aplica&ccedil;&atilde;o direta: encontrar as menores rotas de uma origem para todos os outros v&eacute;rtices de uma rede.</p>
+                        <p><strong>Insight:</strong> Para garantir a admissibilidade, geralmente "relaxamos" o problema (ex: ignorar obstáculos para calcular a distância).</p>
                     </div>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object fit-visual canvas-visual">
-                        <canvas id="priority-queue-canvas" aria-label="Fila de prioridades ordenada pelo menor custo acumulado lambda(v)"></canvas>
+                    <div class="graph-container dynamic-object admit-container" id="canvas-container-admissibilidade" style="transition: border-color 0.3s, box-shadow 0.3s;">
+                        <canvas id="canvas-admissibilidade"></canvas>
                     </div>
                 </div>
             </div>
             <div class="controls">
-                <span>Slide 3</span>
+                <span>Use as setas &larr; e &rarr; para navegar</span>
             </div>
         </section>
     </div>
