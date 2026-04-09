@@ -1,40 +1,57 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
+    // Lista ordenada dos arquivos HTML que formam a apresentação
+    const slidePages = [
+        "slide1.html",
+        "slide2.html",
+        "slide_heuristica.html",
+        "slide3.html",
+        "slide4.html",
+        "slide5.html",
+        "slide6.html",
+        "slide7.html",
+        "slide8.html"
+    ];
 
-    // Configuração para navegar entre slides usando as setas do teclado
+    function navigateToRelativeSlide(step) {
+        let path = window.location.pathname;
+        let currentPage = path.substring(path.lastIndexOf('/') + 1) || "slide1.html";
+        
+        const currentIndex = slidePages.findIndex(page => currentPage === page || currentPage.includes(page));
+        
+        if (currentIndex !== -1) {
+            let nextIndex = currentIndex + step;
+            if (nextIndex >= 0 && nextIndex < slidePages.length) {
+                window.location.href = slidePages[nextIndex];
+            }
+        }
+    }
+
+    // Configuração para navegar usando teclado
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-            nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-            prevSlide();
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            navigateToRelativeSlide(1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            navigateToRelativeSlide(-1);
         }
     });
 
-    function showSlide(index) {
-        if (index < 0) index = 0;
-        if (index >= slides.length) index = slides.length - 1;
-        
-        slides.forEach(slide => slide.classList.remove('active'));
-        
-        // Reflow rápido para reiniciar as animações CSS
-        void slides[index].offsetWidth;
-        
-        slides[index].classList.add('active');
-        currentSlide = index;
-    }
+    // Configuração para navegar usando botões do mouse
+    document.addEventListener('mousedown', (e) => {
+        // Ignora caso o clique seja dentro de um elemento interativo
+        if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
 
-    function nextSlide() {
-        if (currentSlide < slides.length - 1) {
-            showSlide(currentSlide + 1);
+        if (e.button === 0) { // Esquerdo = Avançar
+            navigateToRelativeSlide(1);
+        } else if (e.button === 2) { // Direito = Voltar
+            navigateToRelativeSlide(-1);
         }
-    }
+    });
 
-    function prevSlide() {
-        if (currentSlide > 0) {
-            showSlide(currentSlide - 1);
-        }
-    }
+    // Desativa o menu de contexto padrão no botão direito (exceto sobre Canvas interativo)
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
+        e.preventDefault();
+    });
     
     // Efeito Paralaxe apenas nos objetos INTERNOS (dinâmicos), slide em si fica estático
     document.addEventListener('mousemove', (e) => {

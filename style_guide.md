@@ -106,21 +106,20 @@ Diretrizes:
 - controles e instruções devem ficar discretos no rodapé;
 - nenhum componente deve vazar para fora do container principal do slide.
 
-## Regra de encaixe
+## Regra de Encaixe e Adaptação de Conteúdo
 
-Se houver risco de quebra, overflow, vazamento lateral ou colisão com o rodapé, é permitido:
+**O conteúdo jamais deve quebrar, vazar ou ficar invisível.** Ao projetar ou ajustar um slide, o foco absoluto da formatação é garantir que os objetos e textos não se percam fora do *frame*.
 
-- reduzir escala tipográfica;
-- compactar espaçamentos;
-- alterar a proporção entre as colunas;
-- reorganizar blocos internos;
-- simplificar a hierarquia visual do slide;
-- trocar um layout rígido por uma composição mais compacta.
+Se houver risco de colisão (com o rodapé, lateral ou sobreposição de grid), você DEVE mudar a formatação para adaptar da melhor forma possível:
+- Reduza a escala tipográfica `h1` ou `p` para encaixar textos longos;
+- Ajuste as frações do `grid-template-columns` para balancear a área de texto vs. imagem;
+- Remova `aspect-ratio` rígidos substituindo por tamanhos fluidos (ex: `height: 55vh`);
+- Reorganize blocos internos ou compacte espaçamentos (`gap`, `margin`, `padding`);
+- **EVITE estruturar "frames dentro de frames"** na área visual. A estrutura padrão deve ser simples (ex: `.image-content` > `.graph-container` > `<canvas>`). Não crie tags artificiais de "placeholder de imagem" ou "análise" que distorçam as proporções ou quebrem a harmonia com o resto da apresentação.
 
 Prioridade:
-
-- manter a linguagem visual é importante;
-- manter tudo contido com clareza dentro do slide é obrigatório.
+1. Manter a clareza total do conteúdo sem vazamentos (adapte o CSS ou HTML se necessário).
+2. Manter a coerência com a linguagem visual refinada.
 
 ## Componentes visuais
 
