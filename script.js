@@ -63,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ignora caso o clique seja dentro de um elemento interativo
         if (e.target.tagName.toLowerCase() === 'canvas' || e.target.closest('button, a, input, select, .controls, .canvas-buttons')) return;
 
-        if (e.button === 0) { // Esquerdo = Avançar
-            navigateToRelativeSlide(1);
-        } else if (e.button === 2) { // Direito = Voltar
+        if (e.button === 0) { // Esquerdo = Voltar
             navigateToRelativeSlide(-1);
+        } else if (e.button === 2) { // Direito = Avançar
+            navigateToRelativeSlide(1);
         }
     });
 
@@ -641,8 +641,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ctxM.clearRect(0, 0, w, h);
             if(t < 1) t += 0.02;
 
-            const startX = w * 0.2, startY = h * 0.8;
-            const endX = w * 0.8, endY = h * 0.2;
+            // Assimetria nas coordenadas garante que a métrica de Chebyshev forme uma "quina" visível,
+            // não coincidindo acidentalmente com a linha reta perfeita do Euclidiano
+            const startX = w * 0.15, startY = h * 0.85;
+            const endX = w * 0.85, endY = h * 0.45;
 
             // Draw Grid
             ctxM.strokeStyle = "rgba(0,0,0,0.05)";

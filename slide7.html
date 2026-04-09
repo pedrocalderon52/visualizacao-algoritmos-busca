@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>An&aacute;lise Comparativa: Direcionamento</title>
+    <title>Análise Comparativa: Direcionamento</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -14,27 +14,27 @@
         <section class="slide active fit-slide">
             <div class="slide-content dual-layout">
                 <div class="text-content">
-                    <span class="intro-label">An&aacute;lise Comparativa</span>
                     <h1>Direcionamento da Busca</h1>
-                    <p class="support-copy">Como Dijkstra e A* se comportam quando existe um alvo definido.</p>
-                    <p>Dijkstra e A* percorrem estruturas parecidas, mas se comportam de maneira muito diferente quando o objetivo &eacute; alcan&ccedil;ar um destino espec&iacute;fico.</p>
-                    <div class="comparison-grid">
-                        <div class="comparison-card">
-                            <h2>Dijkstra</h2>
-                            <p>Busca &agrave;s cegas. Sem informa&ccedil;&atilde;o sobre o destino, a expans&atilde;o cresce de forma radial pelas arestas de menor peso.</p>
+                    <p>Dijkstra e A* percorrem estruturas parecidas, mas se comportam de maneira muito diferente quando o objetivo é atingir um destino específico.</p>
+                    
+                    <div style="display: flex; gap: 1.5rem; margin: 1.5rem 0;">
+                        <div style="flex: 1; padding: 1.2rem; background: var(--bg-color); border-radius: 12px; border: 1px solid var(--glass-border);">
+                            <h3 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.2rem;">Dijkstra</h3>
+                            <p style="margin-bottom: 0; font-size: 1rem; line-height: 1.4;">Busca às cegas. A expansão cresce de forma radial.</p>
                         </div>
-                        <div class="comparison-card highlighted">
-                            <h2>A*</h2>
-                            <p>Busca guiada. A heur&iacute;stica atrai a expans&atilde;o para a dire&ccedil;&atilde;o desejada e concentra o esfor&ccedil;o perto do alvo.</p>
+                        <div style="flex: 1; padding: 1.2rem; background: var(--accent-glow); border-radius: 12px; border: 1px solid rgba(79, 70, 229, 0.15); border-top: 3px solid var(--accent-color);">
+                            <h3 style="color: var(--accent-color); margin-bottom: 0.5rem; font-size: 1.2rem;">A*</h3>
+                            <p style="margin-bottom: 0; font-size: 1rem; line-height: 1.4;">Busca guiada. A heurística atrai a expansão para o alvo.</p>
                         </div>
                     </div>
+
                     <div class="highlight-box">
-                        <p>Quando existe um alvo definido, o A* transforma a busca em um processo muito mais direcionado e seletivo.</p>
+                        <p>O A* transforma a busca em um processo muito mais rápido, direcionado e seletivo, economizando memória.</p>
                     </div>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object fit-visual canvas-visual">
-                        <canvas id="search-direction-canvas" aria-label="Compara&ccedil;&atilde;o visual entre expans&atilde;o radial do Dijkstra e busca guiada do A estrela"></canvas>
+                    <div class="graph-container dynamic-object" id="canvas-container-slide7">
+                        <canvas id="search-direction-canvas" aria-label="Comparação visual entre expansão radial do Dijkstra e busca guiada do A estrela"></canvas>
                     </div>
                 </div>
             </div>
