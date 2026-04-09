@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafos: Caminho</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active fit-slide">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <span class="intro-label">Conceito Fundamental</span>
+                    <h1>Caminho entre Grafos</h1>
+                    <p>Um <strong>caminho</strong> &eacute; uma sequ&ecirc;ncia de v&eacute;rtices e arestas que liga um ponto de origem a um ponto de destino.</p>
+                    <ul class="bullet-list">
+                        <li>No percurso destacado, cada passo sai de um v&eacute;rtice e alcan&ccedil;a o pr&oacute;ximo por uma aresta.</li>
+                        <li>Na ideia cl&aacute;ssica apresentada em aula, o caminho passa por cada v&eacute;rtice e cada aresta uma &uacute;nica vez.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p>Visualmente, o caminho &eacute; a trilha escolhida dentro do grafo para sair de um ponto e chegar a outro.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-stack">
+                        <div class="graph-container dynamic-object">
+                            <canvas id="canvas-caminho-grafo" aria-label="Grafo com um caminho destacado entre dois v&eacute;rtices"></canvas>
+                        </div>
+                        <div class="canvas-caption">
+                            <span class="caption-pill is-node">V&eacute;rtices do grafo</span>
+                            <span class="caption-pill is-path">Caminho destacado de A at&eacute; F</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

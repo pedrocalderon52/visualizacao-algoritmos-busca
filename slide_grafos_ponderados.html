@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafos Ponderados</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active fit-slide">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <span class="intro-label">Extens&atilde;o do Modelo</span>
+                    <h1>Grafos Ponderados</h1>
+                    <p>Em um <strong>grafo ponderado</strong>, cada aresta recebe um valor num&eacute;rico que representa custo, dist&acirc;ncia, tempo ou qualquer outra medida relevante.</p>
+                    <ul class="bullet-list">
+                        <li>Os n&uacute;meros ao lado das arestas s&atilde;o os pesos.</li>
+                        <li>Algoritmos como Dijkstra e A* usam esses pesos para escolher rotas melhores.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p>Quando as conex&otilde;es t&ecirc;m custos diferentes, o melhor caminho nem sempre &eacute; o mais curto visualmente.</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-stack">
+                        <div class="graph-container dynamic-object">
+                            <canvas id="canvas-grafo-ponderado" aria-label="Representa&ccedil;&atilde;o de um grafo ponderado"></canvas>
+                        </div>
+                        <div class="canvas-caption">
+                            <span class="caption-pill is-node">V&eacute;rtices</span>
+                            <span class="caption-pill is-path">Arestas com pesos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

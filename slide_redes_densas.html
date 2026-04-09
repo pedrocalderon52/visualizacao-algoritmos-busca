@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise Comparativa: Eficiência em Redes Densas</title>
+    <title>An&aacute;lise Comparativa: Efici&ecirc;ncia em Redes Densas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -18,20 +18,36 @@
                     <h1>Efici&ecirc;ncia em Redes Densas</h1>
                     <p>Em grafos com muitas conex&otilde;es, a diferen&ccedil;a entre uma busca cega e uma busca guiada fica ainda mais evidente.</p>
                     <ul class="bullet-list">
-                        <li>O Dijkstra tende a processar muitos caminhos irrelevantes antes de atingir o destino específico.</li>
-                        <li>O A* reduz drasticamente os ramos inúteis ao concentrar a exploração nas rotas que parecem mais promissoras.</li>
+                        <li>O Dijkstra tende a processar muitos caminhos irrelevantes antes de atingir o destino espec&iacute;fico.</li>
+                        <li>O A* reduz drasticamente os ramos in&uacute;teis ao concentrar a explora&ccedil;&atilde;o nas rotas que parecem mais promissoras.</li>
                     </ul>
                     <div class="highlight-box">
-                        <p>Para ir de um ponto A a um ponto B em redes densas, o A* costuma ser amplamente mais rápido e eficiente.</p>
+                        <p>Para ir de um ponto A a um ponto B em redes densas, o A* costuma ser amplamente mais r&aacute;pido e eficiente.</p>
                     </div>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object fit-visual">
-                        <div class="placeholder-figure">
-                            <span class="placeholder-tag">Placeholder de imagem</span>
-                            <h2>Muitos nós visitados versus poucos nós úteis</h2>
-                            <p>Inserir uma ilustração comparando a enorme quantidade de nós visitados pelo Dijkstra com a quantidade reduzida e eficiente de nós processados pelo A*.</p>
-                            <span class="placeholder-note">O contraste visual deve deixar a diferença de custo de processamento evidente.</span>
+                    <div class="visual-panel canvas-visual dynamic-object fit-visual dense-compare-panel">
+                        <div class="dense-grid">
+                            <div class="mini-graph-card">
+                                <div class="mini-graph-header">
+                                    <div>
+                                        <span class="mini-graph-tag">Dijkstra</span>
+                                        <h2>Explora&ccedil;&atilde;o ampla</h2>
+                                    </div>
+                                    <div class="graph-counter">N&oacute;s Visitados: <span id="dense-dijkstra-count">0</span></div>
+                                </div>
+                                <canvas id="canvas-redes-densas-dijkstra" aria-label="Grafo denso com muitos n&oacute;s visitados pelo Dijkstra"></canvas>
+                            </div>
+                            <div class="mini-graph-card guided">
+                                <div class="mini-graph-header">
+                                    <div>
+                                        <span class="mini-graph-tag">A*</span>
+                                        <h2>Faixa de busca estreita</h2>
+                                    </div>
+                                    <div class="graph-counter">N&oacute;s Visitados: <span id="dense-astar-count">0</span></div>
+                                </div>
+                                <canvas id="canvas-redes-densas-astar" aria-label="Grafo denso com faixa estreita de n&oacute;s visitados pelo A estrela"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>

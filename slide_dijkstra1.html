@@ -14,20 +14,20 @@
         <section class="slide active fit-slide">
             <div class="slide-content dual-layout">
                 <div class="text-content">
-                    <span class="intro-label">Caminhos M&iacute;nimos</span>
+                    <span class="intro-label">Caminhos Mínimos</span>
                     <h1>Algoritmo de Dijkstra</h1>
-                    <p>M&eacute;todo projetado para encontrar <strong>caminhos m&iacute;nimos</strong> em grafos ponderados, onde cada aresta possui um custo associado.</p>
+                    <p>Método projetado para encontrar <strong>caminhos mínimos</strong> em grafos ponderados, onde cada aresta possui um custo associado.</p>
                     <ul class="bullet-list">
-                        <li>Expande primeiro os ramos com menor custo acumulado a partir do v&eacute;rtice de origem.</li>
-                        <li>Reaproveita subcaminhos j&aacute; otimizados para construir solu&ccedil;&otilde;es maiores com consist&ecirc;ncia.</li>
+                        <li>Expande primeiro os ramos com menor custo acumulado a partir do vértice de origem.</li>
+                        <li>Reaproveita subcaminhos já otimizados para construir soluções maiores com consistência.</li>
                     </ul>
                     <div class="highlight-box">
-                        <p>Aplica&ccedil;&atilde;o direta: encontrar as menores rotas de uma origem para todos os outros v&eacute;rtices de uma rede.</p>
+                        <p>Aplicação direta: encontrar as menores rotas de uma origem para todos os outros vértices de uma rede.</p>
                     </div>
                 </div>
                 <div class="image-content">
                     <div class="visual-panel dynamic-object fit-visual canvas-visual">
-                        <canvas id="priority-queue-canvas" aria-label="Fila de prioridades ordenada pelo menor custo acumulado lambda(v)"></canvas>
+                        <canvas id="canvas-admissibilidade" aria-label="Grafo ponderado com expansão radial do algoritmo de Dijkstra"></canvas>
                     </div>
                 </div>
             </div>

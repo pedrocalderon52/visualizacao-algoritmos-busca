@@ -28,15 +28,38 @@
                     <div class="highlight-box">
                         <p>A cada iteração, o algoritmo escolhe o vértice mais promissor e relaxa as arestas adjacentes para atualizar os menores custos conhecidos.</p>
                     </div>
-                    <p style="color: var(--text-secondary);">O custo estimado do n&oacute; atual n&atilde;o pode ser maior que o custo de um passo para o vizinho somado &agrave; estimativa desse vizinho.</p>
+                    <p style="color: var(--text-secondary);">O custo estimado do nó atual não pode ser maior que o custo de um passo para o vizinho somado à estimativa desse vizinho.</p>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object fit-visual">
-                        <div class="placeholder-figure">
-                            <span class="placeholder-tag">Placeholder de imagem</span>
-                            <h2>Fila ordenada pelo menor custo</h2>
-                            <p>Inserir uma imagem de fila de prioridades ordenando os vértices pelo menor custo acumulado &lambda;(v).</p>
-                            <span class="placeholder-note">A composição ideal destaca o vértice extraído primeiro.</span>
+                    <div class="visual-panel dynamic-object fit-visual queue-visual-panel">
+                        <div class="priority-queue" aria-label="Fila de prioridades ordenada por lambda de v">
+                            <div class="queue-header">
+                                <span class="queue-tag">Priority Queue</span>
+                                <span class="queue-order">Menor &rarr; Maior &lambda;(v)</span>
+                            </div>
+                            <div class="queue-list">
+                                <article class="queue-card is-min">
+                                    <span class="extract-pill">ExtractMin</span>
+                                    <p>Vértice: <strong>u</strong></p>
+                                    <p>&lambda;(v): <span class="queue-value">3</span></p>
+                                </article>
+                                <article class="queue-card">
+                                    <p>Vértice: <strong>x</strong></p>
+                                    <p>&lambda;(v): <span class="queue-value">7</span></p>
+                                </article>
+                                <article class="queue-card">
+                                    <p>Vértice: <strong>m</strong></p>
+                                    <p>&lambda;(v): <span class="queue-value">11</span></p>
+                                </article>
+                                <article class="queue-card">
+                                    <p>Vértice: <strong>t</strong></p>
+                                    <p>&lambda;(v): <span class="queue-value">15</span></p>
+                                </article>
+                                <article class="queue-card">
+                                    <p>Vértice: <strong>z</strong></p>
+                                    <p>&lambda;(v): <span class="queue-value">19</span></p>
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>

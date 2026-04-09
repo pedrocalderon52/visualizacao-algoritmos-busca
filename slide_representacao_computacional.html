@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafos: Representa&ccedil;&atilde;o Computacional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation">
+        <section class="slide active fit-slide">
+            <div class="slide-content dual-layout">
+                <div class="text-content">
+                    <span class="intro-label">Representa&ccedil;&atilde;o Computacional</span>
+                    <h1>Matriz de Adjac&ecirc;ncias</h1>
+                    <p>Para usar um grafo em algoritmos, precisamos de uma forma de registrar no computador <strong>quem se conecta com quem</strong>.</p>
+                    <div class="adjacency-stack">
+                        <div class="code-panel">
+                            <p><span class="code-accent">a</span>: b, c, d</p>
+                            <p><span class="code-accent">b</span>: a, d</p>
+                            <p><span class="code-accent">c</span>: a</p>
+                            <p><span class="code-accent">d</span>: a, b</p>
+                        </div>
+                        <div class="graph-note-card">
+                            <h3>Leitura direta</h3>
+                            <p>O v&eacute;rtice <strong>a</strong> se conecta a <strong>b</strong>, <strong>c</strong> e <strong>d</strong>. J&aacute; <strong>c</strong> possui apenas uma conex&atilde;o.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="graph-container dynamic-object">
+                        <canvas id="canvas-representacao-grafo" aria-label="Grafo nomeado correspondente &agrave; representa&ccedil;&atilde;o computacional"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <span>Use as setas &larr; e &rarr; para navegar</span>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
