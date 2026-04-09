@@ -1,65 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.slide');
     let currentSlide = 0;
+    const slidePages = ['slide2.html', 'slide3.html', 'slide4.html', 'slide5.html', 'slide6.html', 'slide7.html', 'slide8.html'];
+    const currentPage = window.location.pathname.split('/').pop();
+    const currentPageIndex = slidePages.indexOf(currentPage);
 
     // Configuração para navegar entre slides usando as setas do teclado
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ') {
-            nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-            prevSlide();
+        const shouldGoNext = e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Space' || e.key === 'Spacebar';
+        const shouldGoPrev = e.key === 'ArrowLeft';
+
+        if (!shouldGoNext && !shouldGoPrev) {
+            return;
         }
+
+        e.preventDefault();
+
+        if (shouldGoNext) {
+            nextSlide();
+            return;
+        }
+
+        prevSlide();
     });
 
     function showSlide(index) {
         if (index < 0) index = 0;
         if (index >= slides.length) index = slides.length - 1;
-        
+
         slides.forEach(slide => slide.classList.remove('active'));
-        
+
         // Reflow rápido para reiniciar as animações CSS
         void slides[index].offsetWidth;
-        
+
         slides[index].classList.add('active');
         currentSlide = index;
     }
 
     function nextSlide() {
-        if (currentSlide < slides.length - 1) {
+        if (slides.length > 1 && currentSlide < slides.length - 1) {
             showSlide(currentSlide + 1);
+            return;
+        }
+
+        if (currentPageIndex !== -1 && currentPageIndex < slidePages.length - 1) {
+            window.location.href = slidePages[currentPageIndex + 1];
         }
     }
 
     function prevSlide() {
-        if (currentSlide > 0) {
+        if (slides.length > 1 && currentSlide > 0) {
             showSlide(currentSlide - 1);
+            return;
+        }
+
+        if (currentPageIndex > 0) {
+            window.location.href = slidePages[currentPageIndex - 1];
         }
     }
-    
+
     // Efeito Paralaxe apenas nos objetos INTERNOS (dinâmicos), slide em si fica estático
     document.addEventListener('mousemove', (e) => {
         const slideActive = document.querySelector('.slide.active');
-        if(!slideActive) return;
+        if (!slideActive) return;
 
         const dynamicObjects = slideActive.querySelectorAll('.dynamic-object');
-        
+
         // Calcula a posição do mouse relativa ao centro da tela
         const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
         const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-        
+
         dynamicObjects.forEach(obj => {
             // Aplica translação aos objetos para parecerem reagir ao mouse
             obj.style.transform = `translate(${xAxis}px, ${yAxis}px)`;
         });
     });
-    
+
     // Reseta o movimento quando o mouse sai da tela
     document.addEventListener('mouseleave', () => {
         const slideActive = document.querySelector('.slide.active');
-        if(slideActive) {
+        if (slideActive) {
             const dynamicObjects = slideActive.querySelectorAll('.dynamic-object');
             dynamicObjects.forEach(obj => {
-                obj.style.transform = `translate(0px, 0px)`;
+                obj.style.transform = 'translate(0px, 0px)';
             });
         }
     });
@@ -70,9 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = canvas.getContext('2d');
         let width, height;
 
-        // Resize function
         function resize() {
-            // Usa as dimensões de display e multiplica pelo devicePixelRatio para não ficar embaçado
             const rect = canvas.parentElement.getBoundingClientRect();
             canvas.width = rect.width * window.devicePixelRatio;
             canvas.height = rect.height * window.devicePixelRatio;
@@ -81,11 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         window.addEventListener('resize', resize);
-        
-        // Setup initial sizes (espera até a animação do slide começar/terminar)
         setTimeout(resize, 100);
 
-        // Dados do Grafo (posições relativas de 0.0 a 1.0)
         const nodes = [
             { id: 0, x: 0.2, y: 0.3 },
             { id: 1, x: 0.8, y: 0.25 },
@@ -94,12 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 4, x: 0.7, y: 0.8 }
         ];
 
-        // Conexões (arestas)
         const edges = [
             [0, 2], [1, 2], [2, 3], [2, 4], [3, 4], [0, 3]
         ];
 
-        // Viajante (ponto dinâmico)
         const traveler = {
             currentNode: 0,
             targetNode: 2,
@@ -107,9 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
             speed: 0.008
         };
 
-        // Encontra as arestas disponíveis para um nó específico
         function getNeighbors(nodeId) {
-            let neighbors = [];
+            const neighbors = [];
             edges.forEach(edge => {
                 if (edge[0] === nodeId) neighbors.push(edge[1]);
                 if (edge[1] === nodeId) neighbors.push(edge[0]);
@@ -117,19 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return neighbors;
         }
 
-        // Função para simular o movimento dos nós flutuando suavemente
         let time = 0;
 
         function animate() {
             if (width === 0 || height === 0) resize();
             ctx.clearRect(0, 0, width, height);
 
-            // Tempo mais lento para uma movimentação quase imperceptível
             time += 0.01;
 
-            // Calcula posições reais dos nós com uma flutuação MÍNIMA, focada na estabilidade e conforto
             const actualPositions = nodes.map((n, i) => {
-                const offsetX = Math.sin(time + i * 1.5) * (width * 0.003); // Reduzido de 0.015 para 0.003
+                const offsetX = Math.sin(time + i * 1.5) * (width * 0.003);
                 const offsetY = Math.cos(time + i) * (height * 0.003);
                 return {
                     x: n.x * width + offsetX,
@@ -137,12 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             });
 
-            ctx.lineJoin = "round";
-            ctx.lineCap = "round";
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
 
-            // 1. Desenha as Arestas
             ctx.lineWidth = 3 * window.devicePixelRatio;
-            ctx.strokeStyle = "rgba(79, 70, 229, 0.25)"; // Indigo claro com transparência
+            ctx.strokeStyle = 'rgba(79, 70, 229, 0.25)';
             edges.forEach(edge => {
                 const start = actualPositions[edge[0]];
                 const end = actualPositions[edge[1]];
@@ -152,63 +163,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.stroke();
             });
 
-            // 2. Movimenta e Desenha o Viajante
             traveler.progress += traveler.speed;
             if (traveler.progress >= 1) {
-                // Chegou ao nó destino, sortear o próximo vizinho
                 traveler.currentNode = traveler.targetNode;
                 const neighbors = getNeighbors(traveler.currentNode);
-                // Evita voltar imediatamente se houver mais de uma opção (para ser dinâmico)
-                let nextNode = neighbors[Math.floor(Math.random() * neighbors.length)];
-                traveler.targetNode = nextNode;
+                traveler.targetNode = neighbors[Math.floor(Math.random() * neighbors.length)];
                 traveler.progress = 0;
             }
 
             const startPos = actualPositions[traveler.currentNode];
             const endPos = actualPositions[traveler.targetNode];
-
-            // Função de interpolação suave (easeInOutSine)
             const easeProgress = -(Math.cos(Math.PI * traveler.progress) - 1) / 2;
 
             const travelerX = startPos.x + (endPos.x - startPos.x) * easeProgress;
             const travelerY = startPos.y + (endPos.y - startPos.y) * easeProgress;
 
-            // Desenha um "rastro" atrás do viajante
             ctx.lineWidth = 4 * window.devicePixelRatio;
-            ctx.strokeStyle = "rgba(16, 185, 129, 0.6)"; // Verde/Emerald glow
+            ctx.strokeStyle = 'rgba(16, 185, 129, 0.6)';
             ctx.beginPath();
             ctx.moveTo(startPos.x, startPos.y);
             ctx.lineTo(travelerX, travelerY);
             ctx.stroke();
 
-            // Desenha o viajante em si
             ctx.beginPath();
             ctx.arc(travelerX, travelerY, 8 * window.devicePixelRatio, 0, Math.PI * 2);
-            ctx.fillStyle = "#10b981"; // Emerald
+            ctx.fillStyle = '#10b981';
             ctx.fill();
-            ctx.shadowColor = "rgba(16, 185, 129, 0.8)";
+            ctx.shadowColor = 'rgba(16, 185, 129, 0.8)';
             ctx.shadowBlur = 15;
-            ctx.fill(); // Duplo fill para o blur fixar melhor
-            ctx.shadowBlur = 0; // reset shadow
+            ctx.fill();
+            ctx.shadowBlur = 0;
 
-            // 3. Desenha os Nós (Vértices)
             actualPositions.forEach((pos, i) => {
-                // Se for o nó atual do viajante, dá um destaque
                 const isActive = (i === traveler.currentNode) || (i === traveler.targetNode);
-                
+
                 ctx.beginPath();
                 ctx.arc(pos.x, pos.y, (isActive ? 12 : 10) * window.devicePixelRatio, 0, Math.PI * 2);
-                ctx.fillStyle = isActive ? "#4f46e5" : "#818cf8";
+                ctx.fillStyle = isActive ? '#4f46e5' : '#818cf8';
                 ctx.fill();
 
-                // Borda branca para dar contorno/elegância
                 ctx.lineWidth = 3 * window.devicePixelRatio;
-                ctx.strokeStyle = "#ffffff";
+                ctx.strokeStyle = '#ffffff';
                 ctx.stroke();
 
-                // Efeito glow/shadow suave nos nós
                 if (isActive) {
-                    ctx.shadowColor = "rgba(79, 70, 229, 0.5)";
+                    ctx.shadowColor = 'rgba(79, 70, 229, 0.5)';
                     ctx.shadowBlur = 20;
                     ctx.fill();
                     ctx.shadowBlur = 0;
@@ -218,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(animate);
         }
 
-        // Delay para ter certeza que a seção foi montada no DOM
         setTimeout(() => {
             resize();
             animate();
@@ -245,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             priorityCanvas.width = rect.width * ratio;
             priorityCanvas.height = rect.height * ratio;
-
             width = rect.width;
             height = rect.height;
 
@@ -282,50 +279,48 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText(text, x, y);
         }
 
-        function drawCard(x, y, w, h, item, pulse) {
-            const glow = item.active ? 18 + pulse * 12 : 0;
-            const fill = item.active ? 'rgba(79, 70, 229, 0.14)' : 'rgba(255, 255, 255, 0.92)';
-            const border = item.active ? '#4f46e5' : 'rgba(148, 163, 184, 0.4)';
+        function drawQueueCard(x, y, w, h, item, pulse) {
+            const activeOffset = item.active ? Math.sin(time) * 2 : 0;
 
             ctx.save();
-            ctx.shadowColor = item.active ? 'rgba(79, 70, 229, 0.18)' : 'transparent';
-            ctx.shadowBlur = glow;
-            roundedRect(x, y, w, h, 20);
-            ctx.fillStyle = fill;
+            ctx.shadowColor = item.active ? 'rgba(79, 70, 229, 0.16)' : 'transparent';
+            ctx.shadowBlur = item.active ? 16 + pulse * 8 : 0;
+            roundedRect(x, y + activeOffset, w, h, 18);
+            ctx.fillStyle = item.active ? 'rgba(79, 70, 229, 0.08)' : '#ffffff';
             ctx.fill();
             ctx.restore();
 
-            roundedRect(x, y, w, h, 20);
-            ctx.lineWidth = item.active ? 2.5 : 1.5;
-            ctx.strokeStyle = border;
+            roundedRect(x, y + activeOffset, w, h, 18);
+            ctx.lineWidth = item.active ? 2.2 : 1.4;
+            ctx.strokeStyle = item.active ? '#4f46e5' : 'rgba(148, 163, 184, 0.35)';
             ctx.stroke();
 
-            roundedRect(x + 16, y + 16, 56, h - 32, 14);
+            roundedRect(x + 16, y + 14 + activeOffset, 48, h - 28, 13);
             ctx.fillStyle = item.active ? '#4f46e5' : 'rgba(79, 70, 229, 0.08)';
             ctx.fill();
 
-            drawLabel(item.vertex, x + 44, y + h / 2, {
-                font: '700 22px Outfit',
+            drawLabel(item.vertex, x + 40, y + h / 2 + activeOffset, {
+                font: '700 20px Outfit',
                 color: item.active ? '#ffffff' : '#4f46e5',
                 align: 'center'
             });
 
-            drawLabel('λ(v)', x + 96, y + 26, {
+            drawLabel('\u03bb(v)', x + 84, y + 24 + activeOffset, {
                 font: '600 12px Outfit',
                 color: '#64748b'
             });
 
-            drawLabel(item.lambda, x + 96, y + h / 2 + 8, {
-                font: '700 28px Outfit',
+            drawLabel(item.lambda, x + 84, y + h / 2 + 8 + activeOffset, {
+                font: '700 26px Outfit',
                 color: '#0f172a'
             });
 
             if (item.active) {
-                roundedRect(x + w - 128, y + 18, 104, 28, 14);
-                ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
+                roundedRect(x + w - 116, y + 18 + activeOffset, 92, 24, 12);
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.12)';
                 ctx.fill();
-                drawLabel('menor custo', x + w - 76, y + 32, {
-                    font: '700 11px Outfit',
+                drawLabel('menor custo', x + w - 70, y + 30 + activeOffset, {
+                    font: '700 10px Outfit',
                     color: '#059669',
                     align: 'center'
                 });
@@ -338,166 +333,129 @@ document.addEventListener('DOMContentLoaded', () => {
 
             time += 0.018;
             const pulse = (Math.sin(time) + 1) / 2;
-            const floatOffset = Math.sin(time * 0.6) * 4;
 
+            const outerPad = 22;
+            const leftPanel = {
+                x: 34,
+                y: height * 0.27,
+                w: width * 0.22,
+                h: height * 0.30
+            };
             const queuePanel = {
-                x: width * 0.43,
+                x: width * 0.40,
                 y: height * 0.16,
-                w: width * 0.47,
+                w: width * 0.46,
                 h: height * 0.68
             };
+            const cardX = queuePanel.x + 18;
+            const cardW = queuePanel.w - 36;
+            const cardH = 72;
+            const cardGap = 16;
+            const firstCardY = queuePanel.y + 54;
+            const linkStartX = leftPanel.x + leftPanel.w + 16;
+            const linkStartY = leftPanel.y + leftPanel.h / 2;
+            const linkEndX = queuePanel.x - 16;
+            const linkEndY = firstCardY + cardH / 2;
 
-            const extractPanel = {
-                x: width * 0.08,
-                y: height * 0.28,
-                w: width * 0.24,
-                h: height * 0.28
-            };
-
-            const topCardY = queuePanel.y + 54 + floatOffset;
-            const cardHeight = 78;
-            const gap = 18;
-
-            ctx.save();
             const bgGradient = ctx.createLinearGradient(0, 0, width, height);
-            bgGradient.addColorStop(0, 'rgba(255, 255, 255, 0.96)');
-            bgGradient.addColorStop(1, 'rgba(238, 244, 255, 0.95)');
-            roundedRect(18, 18, width - 36, height - 36, 24);
+            bgGradient.addColorStop(0, '#fbfdff');
+            bgGradient.addColorStop(1, '#eef4ff');
+            roundedRect(outerPad, outerPad, width - outerPad * 2, height - outerPad * 2, 26);
             ctx.fillStyle = bgGradient;
             ctx.fill();
-            ctx.restore();
-
-            roundedRect(queuePanel.x, queuePanel.y, queuePanel.w, queuePanel.h, 28);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.78)';
-            ctx.fill();
-            ctx.lineWidth = 1.5;
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.28)';
+            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.18)';
             ctx.stroke();
 
-            roundedRect(extractPanel.x, extractPanel.y, extractPanel.w, extractPanel.h, 24);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+            roundedRect(leftPanel.x, leftPanel.y, leftPanel.w, leftPanel.h, 22);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
             ctx.fill();
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 1.4;
             ctx.strokeStyle = 'rgba(16, 185, 129, 0.28)';
             ctx.stroke();
 
-            roundedRect(queuePanel.x + 22, queuePanel.y + 18, 104, 28, 14);
-            ctx.fillStyle = 'rgba(79, 70, 229, 0.1)';
-            ctx.fill();
-            drawLabel('Fila Q', queuePanel.x + 74, queuePanel.y + 32, {
-                font: '700 12px Outfit',
-                color: '#4f46e5',
-                align: 'center'
-            });
-
-            drawLabel('ordenada por menor λ(v)', queuePanel.x + queuePanel.w - 28, queuePanel.y + 32, {
-                font: '600 13px Outfit',
-                color: '#64748b',
-                align: 'right'
-            });
-
-            drawLabel('1º extraído', extractPanel.x + extractPanel.w / 2, extractPanel.y - 24, {
-                font: '700 13px Outfit',
-                color: '#059669',
-                align: 'center'
-            });
-
-            queueItems.forEach((item, index) => {
-                const x = queuePanel.x + 22 - (item.active ? 18 + pulse * 8 : 0);
-                const y = topCardY + index * (cardHeight + gap);
-                const w = queuePanel.w - 44 + (item.active ? 18 : 0);
-
-                drawCard(x, y, w, cardHeight, item, pulse);
-
-                drawLabel(`${index + 1}`, queuePanel.x + queuePanel.w - 18, y + cardHeight / 2, {
-                    font: '700 13px Outfit',
-                    color: '#94a3b8',
-                    align: 'right'
-                });
-            });
-
-            roundedRect(extractPanel.x + 16, extractPanel.y + 18, extractPanel.w - 32, extractPanel.h - 36, 20);
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.08)';
-            ctx.fill();
-
-            ctx.save();
-            ctx.shadowColor = 'rgba(16, 185, 129, 0.22)';
-            ctx.shadowBlur = 22 + pulse * 12;
-            roundedRect(extractPanel.x + 32, extractPanel.y + 42, extractPanel.w - 64, 94, 22);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
-            ctx.fill();
-            ctx.restore();
-
-            roundedRect(extractPanel.x + 32, extractPanel.y + 42, extractPanel.w - 64, 94, 22);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#10b981';
-            ctx.stroke();
-
-            roundedRect(extractPanel.x + 48, extractPanel.y + 58, 60, 62, 16);
-            ctx.fillStyle = '#10b981';
-            ctx.fill();
-
-            drawLabel(queueItems[0].vertex, extractPanel.x + 78, extractPanel.y + 90, {
-                font: '700 26px Outfit',
-                color: '#ffffff',
-                align: 'center'
-            });
-
-            drawLabel('u', extractPanel.x + extractPanel.w - 86, extractPanel.y + 72, {
+            drawLabel('1\u00ba extra\u00eddo', leftPanel.x, leftPanel.y - 20, {
                 font: '700 13px Outfit',
                 color: '#059669'
             });
 
-            drawLabel(`λ(v) = ${queueItems[0].lambda}`, extractPanel.x + extractPanel.w - 86, extractPanel.y + 102, {
-                font: '700 24px Outfit',
-                color: '#0f172a'
-            });
+            roundedRect(leftPanel.x + 24, leftPanel.y + 38, leftPanel.w - 48, leftPanel.h - 72, 18);
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.08)';
+            ctx.fill();
 
-            drawLabel('ExtractMin(Q)', width * 0.34, queuePanel.y + 56, {
-                font: '700 13px Outfit',
-                color: '#4f46e5',
+            roundedRect(leftPanel.x + 40, leftPanel.y + 62, 68, 88, 18);
+            ctx.fillStyle = '#10b981';
+            ctx.fill();
+
+            drawLabel(queueItems[0].vertex, leftPanel.x + 74, leftPanel.y + 106, {
+                font: '700 34px Outfit',
+                color: '#ffffff',
                 align: 'center'
             });
 
-            const arrowStartX = extractPanel.x + extractPanel.w + 18;
-            const arrowStartY = extractPanel.y + extractPanel.h / 2;
-            const arrowEndX = queuePanel.x - 16;
-            const arrowEndY = topCardY + cardHeight / 2;
+            drawLabel(`\u03bb(v) = ${queueItems[0].lambda}`, leftPanel.x + leftPanel.w / 2, leftPanel.y + leftPanel.h - 46, {
+                font: '700 22px Outfit',
+                color: '#0f172a',
+                align: 'center'
+            });
 
-            ctx.beginPath();
-            ctx.moveTo(arrowStartX, arrowStartY);
-            ctx.bezierCurveTo(
-                width * 0.35,
-                arrowStartY - 34,
-                width * 0.38,
-                arrowEndY - 14,
-                arrowEndX,
-                arrowEndY
-            );
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = 'rgba(79, 70, 229, 0.4)';
+            roundedRect(queuePanel.x, queuePanel.y, queuePanel.w, queuePanel.h, 24);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+            ctx.fill();
+            ctx.lineWidth = 1.4;
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
             ctx.stroke();
 
-            const travel = pulse;
-            const pointX = arrowStartX + (arrowEndX - arrowStartX) * travel;
-            const pointY = arrowStartY + (arrowEndY - arrowStartY) * travel;
+            drawLabel('Fila Q', queuePanel.x + 20, queuePanel.y + 26, {
+                font: '700 13px Outfit',
+                color: '#4f46e5'
+            });
+
+            drawLabel('ordenada por menor \u03bb(v)', queuePanel.x + 20, queuePanel.y + 46, {
+                font: '600 12px Outfit',
+                color: '#64748b'
+            });
+
+            queueItems.forEach((item, index) => {
+                const y = firstCardY + index * (cardH + cardGap);
+                drawQueueCard(cardX, y, cardW, cardH, item, pulse);
+            });
+
             ctx.beginPath();
-            ctx.arc(pointX, pointY, 5.5, 0, Math.PI * 2);
+            ctx.moveTo(linkStartX, linkStartY);
+            ctx.bezierCurveTo(
+                width * 0.33,
+                linkStartY,
+                width * 0.35,
+                linkEndY,
+                linkEndX,
+                linkEndY
+            );
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = 'rgba(79, 70, 229, 0.35)';
+            ctx.stroke();
+
+            const dotT = 0.35 + pulse * 0.3;
+            const dotX = linkStartX + (linkEndX - linkStartX) * dotT;
+            const dotY = linkStartY + (linkEndY - linkStartY) * dotT;
+            ctx.beginPath();
+            ctx.arc(dotX, dotY, 5, 0, Math.PI * 2);
             ctx.fillStyle = '#10b981';
             ctx.fill();
 
             ctx.beginPath();
-            ctx.moveTo(arrowEndX, arrowEndY);
-            ctx.lineTo(arrowEndX - 12, arrowEndY - 8);
-            ctx.moveTo(arrowEndX, arrowEndY);
-            ctx.lineTo(arrowEndX - 12, arrowEndY + 8);
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = 'rgba(79, 70, 229, 0.5)';
+            ctx.moveTo(linkEndX, linkEndY);
+            ctx.lineTo(linkEndX - 10, linkEndY - 7);
+            ctx.moveTo(linkEndX, linkEndY);
+            ctx.lineTo(linkEndX - 10, linkEndY + 7);
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = 'rgba(79, 70, 229, 0.45)';
             ctx.stroke();
 
-            drawLabel('frente da fila', queuePanel.x + 48, topCardY - 18, {
-                font: '600 12px Outfit',
-                color: '#64748b'
+            drawLabel('ExtractMin(Q)', width * 0.30, linkStartY - 28, {
+                font: '700 12px Outfit',
+                color: '#4f46e5',
+                align: 'center'
             });
 
             requestAnimationFrame(animatePriorityQueue);
@@ -510,4 +468,824 @@ document.addEventListener('DOMContentLoaded', () => {
             animatePriorityQueue();
         }, 300);
     }
+
+    function mountCanvasScene(canvasId, drawFrame) {
+        const sceneCanvas = document.getElementById(canvasId);
+        if (!sceneCanvas) return;
+
+        const ctx = sceneCanvas.getContext('2d');
+        let width = 0;
+        let height = 0;
+
+        function resizeScene() {
+            const rect = sceneCanvas.parentElement.getBoundingClientRect();
+            const ratio = window.devicePixelRatio || 1;
+
+            sceneCanvas.width = rect.width * ratio;
+            sceneCanvas.height = rect.height * ratio;
+            width = rect.width;
+            height = rect.height;
+
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function animateScene(timestamp) {
+            if (!width || !height) resizeScene();
+            ctx.clearRect(0, 0, width, height);
+
+            drawFrame({
+                ctx,
+                width,
+                height,
+                time: timestamp * 0.001,
+                pulse: (Math.sin(timestamp * 0.002) + 1) / 2
+            });
+
+            requestAnimationFrame(animateScene);
+        }
+
+        window.addEventListener('resize', resizeScene);
+
+        setTimeout(() => {
+            resizeScene();
+            requestAnimationFrame(animateScene);
+        }, 300);
+    }
+
+    function roundRectPath(ctx, x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + w - radius, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+        ctx.lineTo(x + w, y + h - radius);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+        ctx.lineTo(x + radius, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+    }
+
+    function fillRoundRect(ctx, x, y, w, h, r, fillStyle, shadowColor = null, shadowBlur = 0) {
+        ctx.save();
+        if (shadowColor) {
+            ctx.shadowColor = shadowColor;
+            ctx.shadowBlur = shadowBlur;
+        }
+        roundRectPath(ctx, x, y, w, h, r);
+        ctx.fillStyle = fillStyle;
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function strokeRoundRect(ctx, x, y, w, h, r, strokeStyle, lineWidth = 1.5) {
+        ctx.save();
+        roundRectPath(ctx, x, y, w, h, r);
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = strokeStyle;
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawCanvasText(ctx, text, x, y, options = {}) {
+        const {
+            font = '600 14px Outfit',
+            color = '#4f46e5',
+            align = 'left',
+            baseline = 'middle'
+        } = options;
+
+        ctx.save();
+        ctx.font = font;
+        ctx.fillStyle = color;
+        ctx.textAlign = align;
+        ctx.textBaseline = baseline;
+        ctx.fillText(text, x, y);
+        ctx.restore();
+    }
+
+    function drawCanvasCircle(ctx, x, y, radius, fillStyle, strokeStyle = '#ffffff', lineWidth = 2) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = fillStyle;
+        ctx.fill();
+        if (strokeStyle) {
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = strokeStyle;
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+
+    function lerp(start, end, t) {
+        return start + (end - start) * t;
+    }
+
+    function samplePath(points, t) {
+        if (points.length === 1) return points[0];
+
+        const scaled = Math.max(0, Math.min(0.999, t)) * (points.length - 1);
+        const index = Math.floor(scaled);
+        const localT = scaled - index;
+        const start = points[index];
+        const end = points[Math.min(index + 1, points.length - 1)];
+
+        return {
+            x: lerp(start.x, end.x, localT),
+            y: lerp(start.y, end.y, localT)
+        };
+    }
+
+    const dijkstraQueueItems = [
+        { vertex: 'B', lambda: '3', active: true },
+        { vertex: 'D', lambda: '5', active: false },
+        { vertex: 'E', lambda: '7', active: false },
+        { vertex: 'F', lambda: '9', active: false }
+    ];
+
+    function drawDijkstraQueueCard(ctx, x, y, w, h, item, pulse) {
+        const offset = item.active ? (pulse - 0.5) * 4 : 0;
+        const shadowBlur = item.active ? 14 + pulse * 8 : 0;
+
+        fillRoundRect(
+            ctx,
+            x,
+            y + offset,
+            w,
+            h,
+            16,
+            item.active ? 'rgba(79, 70, 229, 0.08)' : '#ffffff',
+            item.active ? 'rgba(79, 70, 229, 0.16)' : null,
+            shadowBlur
+        );
+
+        strokeRoundRect(
+            ctx,
+            x,
+            y + offset,
+            w,
+            h,
+            16,
+            item.active ? '#4f46e5' : 'rgba(148, 163, 184, 0.35)',
+            item.active ? 2 : 1.4
+        );
+
+        fillRoundRect(
+            ctx,
+            x + 14,
+            y + 12 + offset,
+            46,
+            h - 24,
+            12,
+            item.active ? '#4f46e5' : 'rgba(79, 70, 229, 0.08)'
+        );
+
+        drawCanvasText(ctx, item.vertex, x + 37, y + h / 2 + offset, {
+            font: '700 18px Outfit',
+            color: item.active ? '#ffffff' : '#4f46e5',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, '\u03bb(v)', x + 78, y + 20 + offset, {
+            font: '600 11px Outfit',
+            color: '#64748b'
+        });
+
+        drawCanvasText(ctx, item.lambda, x + 78, y + h / 2 + 6 + offset, {
+            font: '700 24px Outfit',
+            color: '#0f172a'
+        });
+    }
+
+    mountCanvasScene('dijkstra-priority-canvas', ({ ctx, width, height, pulse }) => {
+        const background = ctx.createLinearGradient(0, 0, width, height);
+        background.addColorStop(0, '#fbfdff');
+        background.addColorStop(1, '#eef4ff');
+
+        fillRoundRect(ctx, 18, 18, width - 36, height - 36, 24, background);
+        strokeRoundRect(ctx, 18, 18, width - 36, height - 36, 24, 'rgba(148, 163, 184, 0.18)', 1.2);
+
+        const extractBox = {
+            x: 34,
+            y: height * 0.24,
+            w: width * 0.22,
+            h: height * 0.22
+        };
+
+        const queueBox = {
+            x: width * 0.40,
+            y: height * 0.12,
+            w: width * 0.47,
+            h: height * 0.72
+        };
+
+        fillRoundRect(ctx, extractBox.x, extractBox.y, extractBox.w, extractBox.h, 22, 'rgba(255, 255, 255, 0.9)');
+        strokeRoundRect(ctx, extractBox.x, extractBox.y, extractBox.w, extractBox.h, 22, 'rgba(16, 185, 129, 0.28)', 1.4);
+
+        drawCanvasText(ctx, 'u = ExtractMin(Q)', extractBox.x, extractBox.y - 18, {
+            font: '700 12px Outfit',
+            color: '#059669'
+        });
+
+        fillRoundRect(ctx, extractBox.x + 24, extractBox.y + 26, extractBox.w - 48, extractBox.h - 52, 18, 'rgba(16, 185, 129, 0.08)');
+
+        const extractedNode = {
+            x: extractBox.x + 38,
+            y: extractBox.y + 46,
+            w: Math.min(72, extractBox.w - 58),
+            h: Math.min(80, extractBox.h - 64)
+        };
+
+        fillRoundRect(ctx, extractedNode.x, extractedNode.y, extractedNode.w, extractedNode.h, 18, '#10b981');
+
+        drawCanvasText(ctx, 'B', extractedNode.x + extractedNode.w / 2, extractedNode.y + extractedNode.h / 2, {
+            font: '700 32px Outfit',
+            color: '#ffffff',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, '\u03bb(v) = 3', extractBox.x + extractBox.w / 2, extractBox.y + extractBox.h - 34, {
+            font: '700 20px Outfit',
+            color: '#0f172a',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, queueBox.x, queueBox.y, queueBox.w, queueBox.h, 24, 'rgba(255, 255, 255, 0.84)');
+        strokeRoundRect(ctx, queueBox.x, queueBox.y, queueBox.w, queueBox.h, 24, 'rgba(148, 163, 184, 0.22)', 1.4);
+
+        drawCanvasText(ctx, 'Fila Q', queueBox.x + 18, queueBox.y + 24, {
+            font: '700 13px Outfit',
+            color: '#4f46e5'
+        });
+
+        drawCanvasText(ctx, 'ordenada por menor \u03bb(v)', queueBox.x + 18, queueBox.y + 42, {
+            font: '600 12px Outfit',
+            color: '#64748b'
+        });
+
+        const cardX = queueBox.x + 18;
+        const cardY = queueBox.y + 56;
+        const cardW = queueBox.w - 36;
+        const cardH = 50;
+        const cardGap = 10;
+
+        dijkstraQueueItems.forEach((item, index) => {
+            drawDijkstraQueueCard(ctx, cardX, cardY + index * (cardH + cardGap), cardW, cardH, item, pulse);
+        });
+
+        drawCanvasText(ctx, 'relaxa vizinhos', extractBox.x, extractBox.y + extractBox.h + 26, {
+            font: '700 12px Outfit',
+            color: '#64748b'
+        });
+
+        const chipY = extractBox.y + extractBox.h + 42;
+        [
+            { label: 'C', cost: '6', x: extractBox.x },
+            { label: 'E', cost: '8', x: extractBox.x + 82 }
+        ].forEach((chip, index) => {
+            const glow = 8 + pulse * 6 + index * 2;
+            fillRoundRect(
+                ctx,
+                chip.x,
+                chipY,
+                72,
+                44,
+                14,
+                'rgba(255, 255, 255, 0.92)',
+                'rgba(16, 185, 129, 0.10)',
+                glow
+            );
+            strokeRoundRect(ctx, chip.x, chipY, 72, 44, 14, 'rgba(16, 185, 129, 0.22)', 1.2);
+            drawCanvasText(ctx, chip.label, chip.x + 20, chipY + 22, {
+                font: '700 16px Outfit',
+                color: '#10b981',
+                align: 'center'
+            });
+            drawCanvasText(ctx, chip.cost, chip.x + 48, chipY + 22, {
+                font: '700 18px Outfit',
+                color: '#0f172a',
+                align: 'center'
+            });
+        });
+
+        const linkStart = {
+            x: queueBox.x - 14,
+            y: cardY + cardH / 2
+        };
+
+        const linkEnd = {
+            x: extractBox.x + extractBox.w + 8,
+            y: extractBox.y + extractBox.h / 2
+        };
+
+        ctx.beginPath();
+        ctx.moveTo(linkStart.x, linkStart.y);
+        ctx.bezierCurveTo(width * 0.32, linkStart.y, width * 0.30, linkEnd.y, linkEnd.x, linkEnd.y);
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = 'rgba(79, 70, 229, 0.36)';
+        ctx.stroke();
+
+        const travel = 0.18 + pulse * 0.64;
+        const dotX = lerp(linkStart.x, linkEnd.x, travel);
+        const dotY = lerp(linkStart.y, linkEnd.y, travel);
+        drawCanvasCircle(ctx, dotX, dotY, 5, '#10b981', null, 0);
+    });
+
+    mountCanvasScene('astar-heuristic-canvas', ({ ctx, width, height, pulse }) => {
+        const background = ctx.createLinearGradient(0, 0, width, height);
+        background.addColorStop(0, '#fbfdff');
+        background.addColorStop(1, '#eef4ff');
+
+        fillRoundRect(ctx, 18, 18, width - 36, height - 36, 24, background);
+        strokeRoundRect(ctx, 18, 18, width - 36, height - 36, 24, 'rgba(148, 163, 184, 0.18)', 1.2);
+
+        drawCanvasText(ctx, 'heur\u00edstica em linha reta', 34, 34, {
+            font: '700 12px Outfit',
+            color: '#4f46e5'
+        });
+
+        const gridSize = Math.min(width * 0.62, height * 0.72);
+        const gridX = (width - gridSize) / 2;
+        const gridY = height * 0.17;
+        const cellSize = gridSize / 7;
+
+        const obstacles = new Set(['1,1', '2,1', '2,2', '4,3', '4,4', '5,5']);
+        const visited = new Set(['0,5', '1,5', '1,4', '2,4', '3,4', '3,3']);
+        const frontier = new Set(['2,3', '3,2', '4,2']);
+        const current = { col: 3, row: 3 };
+        const start = { col: 0, row: 5 };
+        const goal = { col: 6, row: 1 };
+
+        fillRoundRect(ctx, gridX - 18, gridY - 18, gridSize + 36, gridSize + 36, 24, 'rgba(255, 255, 255, 0.84)');
+        strokeRoundRect(ctx, gridX - 18, gridY - 18, gridSize + 36, gridSize + 36, 24, 'rgba(148, 163, 184, 0.22)', 1.2);
+
+        for (let row = 0; row < 7; row += 1) {
+            for (let col = 0; col < 7; col += 1) {
+                const x = gridX + col * cellSize;
+                const y = gridY + row * cellSize;
+                const key = `${col},${row}`;
+                let fill = 'rgba(255, 255, 255, 0.78)';
+
+                if (obstacles.has(key)) fill = 'rgba(148, 163, 184, 0.24)';
+                if (visited.has(key)) fill = 'rgba(79, 70, 229, 0.12)';
+                if (frontier.has(key)) fill = 'rgba(16, 185, 129, 0.10)';
+
+                fillRoundRect(ctx, x + 2, y + 2, cellSize - 4, cellSize - 4, 10, fill);
+                strokeRoundRect(ctx, x + 2, y + 2, cellSize - 4, cellSize - 4, 10, 'rgba(148, 163, 184, 0.12)', 1);
+            }
+        }
+
+        const routePoints = [
+            start,
+            { col: 1, row: 5 },
+            { col: 1, row: 4 },
+            { col: 2, row: 4 },
+            { col: 3, row: 4 },
+            current
+        ].map(point => ({
+            x: gridX + point.col * cellSize + cellSize / 2,
+            y: gridY + point.row * cellSize + cellSize / 2
+        }));
+
+        ctx.beginPath();
+        ctx.moveTo(routePoints[0].x, routePoints[0].y);
+        routePoints.slice(1).forEach(point => ctx.lineTo(point.x, point.y));
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
+        ctx.stroke();
+
+        const currentCenter = {
+            x: gridX + current.col * cellSize + cellSize / 2,
+            y: gridY + current.row * cellSize + cellSize / 2
+        };
+
+        const goalCenter = {
+            x: gridX + goal.col * cellSize + cellSize / 2,
+            y: gridY + goal.row * cellSize + cellSize / 2
+        };
+
+        ctx.save();
+        ctx.setLineDash([8, 8]);
+        ctx.beginPath();
+        ctx.moveTo(currentCenter.x, currentCenter.y);
+        ctx.lineTo(goalCenter.x, goalCenter.y);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = 'rgba(79, 70, 229, 0.45)';
+        ctx.stroke();
+        ctx.restore();
+
+        const heuristicDot = {
+            x: lerp(currentCenter.x, goalCenter.x, 0.18 + pulse * 0.64),
+            y: lerp(currentCenter.y, goalCenter.y, 0.18 + pulse * 0.64)
+        };
+
+        drawCanvasCircle(ctx, gridX + start.col * cellSize + cellSize / 2, gridY + start.row * cellSize + cellSize / 2, 14, '#4f46e5');
+        drawCanvasCircle(ctx, goalCenter.x, goalCenter.y, 16, '#10b981');
+        drawCanvasCircle(ctx, currentCenter.x, currentCenter.y, 12, '#ffffff', '#4f46e5', 3);
+        drawCanvasCircle(ctx, heuristicDot.x, heuristicDot.y, 5, '#4f46e5', null, 0);
+
+        drawCanvasText(ctx, 'S', gridX + start.col * cellSize + cellSize / 2, gridY + start.row * cellSize + cellSize / 2, {
+            font: '700 14px Outfit',
+            color: '#ffffff',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'G', goalCenter.x, goalCenter.y, {
+            font: '700 14px Outfit',
+            color: '#ffffff',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'v', currentCenter.x, currentCenter.y, {
+            font: '700 13px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, '\u03b3(v)', (currentCenter.x + goalCenter.x) / 2, (currentCenter.y + goalCenter.y) / 2 - 18, {
+            font: '700 12px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'origem', gridX - 8, gridY + gridSize + 22, {
+            font: '600 12px Outfit',
+            color: '#64748b'
+        });
+
+        drawCanvasText(ctx, 'alvo', gridX + gridSize - 4, gridY - 22, {
+            font: '600 12px Outfit',
+            color: '#059669',
+            align: 'right'
+        });
+    });
+
+    mountCanvasScene('astar-formula-canvas', ({ ctx, width, height, pulse }) => {
+        const background = ctx.createLinearGradient(0, 0, width, height);
+        background.addColorStop(0, '#fbfdff');
+        background.addColorStop(1, '#eef4ff');
+
+        fillRoundRect(ctx, 18, 18, width - 36, height - 36, 24, background);
+        strokeRoundRect(ctx, 18, 18, width - 36, height - 36, 24, 'rgba(148, 163, 184, 0.18)', 1.2);
+
+        const chipY = 72;
+        const alphaBox = { x: width * 0.08, y: chipY, w: width * 0.18, h: 54 };
+        const lambdaBox = { x: width * 0.37, y: chipY, w: width * 0.23, h: 54 };
+        const gammaBox = { x: width * 0.68, y: chipY, w: width * 0.23, h: 54 };
+
+        fillRoundRect(ctx, alphaBox.x, alphaBox.y, alphaBox.w, alphaBox.h, 18, 'rgba(79, 70, 229, 0.08)');
+        strokeRoundRect(ctx, alphaBox.x, alphaBox.y, alphaBox.w, alphaBox.h, 18, '#4f46e5', 1.8);
+        drawCanvasText(ctx, '\u03b1(v)', alphaBox.x + alphaBox.w / 2, alphaBox.y + alphaBox.h / 2, {
+            font: '700 28px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, lambdaBox.x, lambdaBox.y, lambdaBox.w, lambdaBox.h, 18, 'rgba(16, 185, 129, 0.08)');
+        strokeRoundRect(ctx, lambdaBox.x, lambdaBox.y, lambdaBox.w, lambdaBox.h, 18, 'rgba(16, 185, 129, 0.28)', 1.6);
+        drawCanvasText(ctx, '\u03bb(v)', lambdaBox.x + lambdaBox.w / 2, lambdaBox.y + lambdaBox.h / 2, {
+            font: '700 26px Outfit',
+            color: '#059669',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, gammaBox.x, gammaBox.y, gammaBox.w, gammaBox.h, 18, 'rgba(79, 70, 229, 0.06)');
+        strokeRoundRect(ctx, gammaBox.x, gammaBox.y, gammaBox.w, gammaBox.h, 18, 'rgba(79, 70, 229, 0.24)', 1.6);
+        drawCanvasText(ctx, '\u03b3(v)', gammaBox.x + gammaBox.w / 2, gammaBox.y + gammaBox.h / 2, {
+            font: '700 26px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, '=', width * 0.31, chipY + 27, {
+            font: '700 28px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, '+', width * 0.64, chipY + 27, {
+            font: '700 28px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        const routeY = height * 0.62;
+        const origin = { x: width * 0.15, y: routeY };
+        const current = { x: width * 0.49, y: routeY };
+        const goal = { x: width * 0.82, y: routeY };
+
+        ctx.beginPath();
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(current.x, current.y);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
+        ctx.stroke();
+
+        ctx.save();
+        ctx.setLineDash([8, 8]);
+        ctx.beginPath();
+        ctx.moveTo(current.x, current.y);
+        ctx.lineTo(goal.x, goal.y);
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(79, 70, 229, 0.45)';
+        ctx.stroke();
+        ctx.restore();
+
+        drawCanvasCircle(ctx, origin.x, origin.y, 12, '#4f46e5');
+        drawCanvasCircle(ctx, current.x, current.y, 13, '#ffffff', '#4f46e5', 3);
+        drawCanvasCircle(ctx, goal.x, goal.y, 14, '#10b981');
+
+        drawCanvasText(ctx, 'origem', origin.x, routeY + 28, {
+            font: '600 12px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'v', current.x, current.y, {
+            font: '700 13px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'destino', goal.x, routeY + 28, {
+            font: '600 12px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'custo real', (origin.x + current.x) / 2, routeY - 22, {
+            font: '700 12px Outfit',
+            color: '#059669',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'estimativa', (current.x + goal.x) / 2, routeY - 22, {
+            font: '700 12px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        ctx.beginPath();
+        ctx.moveTo(lambdaBox.x + lambdaBox.w / 2, lambdaBox.y + lambdaBox.h + 10);
+        ctx.lineTo((origin.x + current.x) / 2, routeY - 34);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(gammaBox.x + gammaBox.w / 2, gammaBox.y + gammaBox.h + 10);
+        ctx.lineTo((current.x + goal.x) / 2, routeY - 34);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(79, 70, 229, 0.3)';
+        ctx.stroke();
+
+        const lambdaDot = {
+            x: lerp(origin.x, current.x, 0.18 + pulse * 0.62),
+            y: routeY
+        };
+
+        const gammaDot = {
+            x: lerp(current.x, goal.x, 0.14 + pulse * 0.68),
+            y: routeY
+        };
+
+        drawCanvasCircle(ctx, lambdaDot.x, lambdaDot.y, 5, '#10b981', null, 0);
+        drawCanvasCircle(ctx, gammaDot.x, gammaDot.y, 5, '#4f46e5', null, 0);
+    });
+
+    mountCanvasScene('search-direction-canvas', ({ ctx, width, height, pulse, time }) => {
+        const background = ctx.createLinearGradient(0, 0, width, height);
+        background.addColorStop(0, '#fbfdff');
+        background.addColorStop(1, '#eef4ff');
+
+        fillRoundRect(ctx, 18, 18, width - 36, height - 36, 24, background);
+        strokeRoundRect(ctx, 18, 18, width - 36, height - 36, 24, 'rgba(148, 163, 184, 0.18)', 1.2);
+
+        ctx.beginPath();
+        ctx.moveTo(width / 2, 44);
+        ctx.lineTo(width / 2, height - 44);
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+        ctx.stroke();
+
+        fillRoundRect(ctx, 36, 34, 96, 28, 14, 'rgba(79, 70, 229, 0.08)');
+        drawCanvasText(ctx, 'Dijkstra', 84, 48, {
+            font: '700 12px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, width / 2 + 24, 34, 74, 28, 14, 'rgba(16, 185, 129, 0.10)');
+        drawCanvasText(ctx, 'A*', width / 2 + 61, 48, {
+            font: '700 12px Outfit',
+            color: '#059669',
+            align: 'center'
+        });
+
+        const leftCenter = { x: width * 0.24, y: height * 0.58 };
+        const targetLeft = { x: width * 0.42, y: height * 0.24 };
+        const radii = [38, 72, 104];
+
+        radii.forEach((radius, ringIndex) => {
+            ctx.beginPath();
+            ctx.arc(leftCenter.x, leftCenter.y, radius + ringIndex * pulse * 2, 0, Math.PI * 2);
+            ctx.lineWidth = 1.4;
+            ctx.strokeStyle = `rgba(79, 70, 229, ${0.10 + ringIndex * 0.06})`;
+            ctx.stroke();
+
+            const steps = 8 + ringIndex * 2;
+            for (let i = 0; i < steps; i += 1) {
+                const angle = (Math.PI * 2 * i) / steps + ringIndex * 0.18;
+                const x = leftCenter.x + Math.cos(angle) * radius;
+                const y = leftCenter.y + Math.sin(angle) * radius;
+                drawCanvasCircle(ctx, x, y, 5, 'rgba(79, 70, 229, 0.20)', null, 0);
+            }
+        });
+
+        drawCanvasCircle(ctx, leftCenter.x, leftCenter.y, 14, '#4f46e5');
+        drawCanvasCircle(ctx, targetLeft.x, targetLeft.y, 12, '#ffffff', '#94a3b8', 2);
+
+        drawCanvasText(ctx, 'expans\u00e3o radial', leftCenter.x, height - 42, {
+            font: '700 12px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        const rightPath = [
+            { x: width * 0.62, y: height * 0.72 },
+            { x: width * 0.68, y: height * 0.62 },
+            { x: width * 0.73, y: height * 0.54 },
+            { x: width * 0.78, y: height * 0.42 },
+            { x: width * 0.84, y: height * 0.26 }
+        ];
+
+        ctx.beginPath();
+        ctx.moveTo(rightPath[0].x, rightPath[0].y);
+        rightPath.slice(1).forEach(point => ctx.lineTo(point.x, point.y));
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
+        ctx.stroke();
+
+        const sideOffsets = [
+            { x: -20, y: 18 },
+            { x: 18, y: -10 },
+            { x: -18, y: -14 },
+            { x: 16, y: 12 }
+        ];
+
+        rightPath.forEach((point, index) => {
+            drawCanvasCircle(ctx, point.x, point.y, index === rightPath.length - 1 ? 13 : 9, index === rightPath.length - 1 ? '#10b981' : 'rgba(79, 70, 229, 0.14)');
+            if (index < sideOffsets.length) {
+                drawCanvasCircle(
+                    ctx,
+                    point.x + sideOffsets[index].x,
+                    point.y + sideOffsets[index].y,
+                    5,
+                    'rgba(79, 70, 229, 0.14)',
+                    null,
+                    0
+                );
+            }
+        });
+
+        const movingPoint = samplePath(rightPath, 0.16 + pulse * 0.72);
+        drawCanvasCircle(ctx, movingPoint.x, movingPoint.y, 6, '#10b981', null, 0);
+
+        drawCanvasText(ctx, 'expans\u00e3o guiada', width * 0.75, height - 42, {
+            font: '700 12px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        const drift = Math.sin(time * 2.2) * 2;
+        drawCanvasCircle(ctx, rightPath[0].x, rightPath[0].y + drift, 10, '#4f46e5');
+    });
+
+    mountCanvasScene('dense-network-canvas', ({ ctx, width, height, pulse }) => {
+        const background = ctx.createLinearGradient(0, 0, width, height);
+        background.addColorStop(0, '#fbfdff');
+        background.addColorStop(1, '#eef4ff');
+
+        fillRoundRect(ctx, 18, 18, width - 36, height - 36, 24, background);
+        strokeRoundRect(ctx, 18, 18, width - 36, height - 36, 24, 'rgba(148, 163, 184, 0.18)', 1.2);
+
+        ctx.beginPath();
+        ctx.moveTo(width / 2, 44);
+        ctx.lineTo(width / 2, height - 44);
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+        ctx.stroke();
+
+        fillRoundRect(ctx, 34, 34, 96, 28, 14, 'rgba(79, 70, 229, 0.08)');
+        drawCanvasText(ctx, 'Dijkstra', 82, 48, {
+            font: '700 12px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, width / 2 + 24, 34, 74, 28, 14, 'rgba(16, 185, 129, 0.10)');
+        drawCanvasText(ctx, 'A*', width / 2 + 61, 48, {
+            font: '700 12px Outfit',
+            color: '#059669',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, 34, 74, 104, 28, 14, 'rgba(79, 70, 229, 0.08)');
+        drawCanvasText(ctx, '43 visitados', 86, 88, {
+            font: '700 12px Outfit',
+            color: '#4f46e5',
+            align: 'center'
+        });
+
+        fillRoundRect(ctx, width / 2 + 24, 74, 88, 28, 14, 'rgba(16, 185, 129, 0.10)');
+        drawCanvasText(ctx, '11 \u00fateis', width / 2 + 68, 88, {
+            font: '700 12px Outfit',
+            color: '#059669',
+            align: 'center'
+        });
+
+        const leftGrid = {
+            x: 44,
+            y: 122,
+            w: width * 0.34,
+            h: height * 0.62
+        };
+
+        const rightGrid = {
+            x: width / 2 + 24,
+            y: 122,
+            w: width * 0.34,
+            h: height * 0.62
+        };
+
+        const leftHighlights = new Set([
+            '0,0', '1,0', '2,0', '3,0', '4,0',
+            '0,1', '1,1', '2,1', '3,1', '4,1', '5,1',
+            '0,2', '1,2', '2,2', '3,2', '4,2', '5,2',
+            '1,3', '2,3', '3,3', '4,3', '5,3',
+            '2,4', '3,4', '4,4',
+            '3,5'
+        ]);
+
+        const rightPathCells = [
+            [0, 5], [1, 5], [2, 4], [3, 4], [4, 3], [5, 2], [6, 2], [7, 1]
+        ];
+
+        function drawDotMatrix(area, highlights, colorMode) {
+            const cols = 8;
+            const rows = 6;
+            const stepX = area.w / (cols - 1);
+            const stepY = area.h / (rows - 1);
+
+            for (let row = 0; row < rows; row += 1) {
+                for (let col = 0; col < cols; col += 1) {
+                    const x = area.x + col * stepX;
+                    const y = area.y + row * stepY;
+                    const key = `${col},${row}`;
+                    const isHighlight = highlights.has(key);
+
+                    if (colorMode === 'dense') {
+                        const opacity = isHighlight ? 0.18 + ((col + row) % 3) * 0.06 + pulse * 0.08 : 0.08;
+                        drawCanvasCircle(ctx, x, y, isHighlight ? 6 : 4.5, `rgba(79, 70, 229, ${opacity})`, null, 0);
+                    } else {
+                        drawCanvasCircle(ctx, x, y, isHighlight ? 6 : 4.5, isHighlight ? 'rgba(16, 185, 129, 0.65)' : 'rgba(79, 70, 229, 0.08)', null, 0);
+                    }
+                }
+            }
+        }
+
+        drawDotMatrix(leftGrid, leftHighlights, 'dense');
+
+        const rightHighlights = new Set(rightPathCells.map(cell => `${cell[0]},${cell[1]}`));
+        drawDotMatrix(rightGrid, rightHighlights, 'guided');
+
+        const rightPathPoints = rightPathCells.map(([col, row]) => ({
+            x: rightGrid.x + (rightGrid.w / 7) * col,
+            y: rightGrid.y + (rightGrid.h / 5) * row
+        }));
+
+        ctx.beginPath();
+        ctx.moveTo(rightPathPoints[0].x, rightPathPoints[0].y);
+        rightPathPoints.slice(1).forEach(point => ctx.lineTo(point.x, point.y));
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.55)';
+        ctx.stroke();
+
+        const rightPulsePoint = samplePath(rightPathPoints, 0.10 + pulse * 0.78);
+        drawCanvasCircle(ctx, rightPulsePoint.x, rightPulsePoint.y, 6, '#10b981', null, 0);
+
+        drawCanvasText(ctx, 'muitos n\u00f3s processados', leftGrid.x + leftGrid.w / 2, height - 30, {
+            font: '700 12px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+
+        drawCanvasText(ctx, 'poucos n\u00f3s relevantes', rightGrid.x + rightGrid.w / 2, height - 30, {
+            font: '700 12px Outfit',
+            color: '#64748b',
+            align: 'center'
+        });
+    });
 });

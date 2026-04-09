@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dijkstra na Prática</title>
+    <title>Dijkstra na Pr&aacute;tica</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -15,8 +15,8 @@
             <div class="slide-content dual-layout">
                 <div class="text-content">
                     <span class="intro-label">Fila de Prioridades</span>
-                    <h1>Dijkstra na Prática</h1>
-                    <p>O algoritmo usa uma fila de prioridades <strong>Q</strong>, organizada pelo custo acumulado <strong>&lambda;(v)</strong>, que mede a distância da raiz até cada vértice.</p>
+                    <h1>Dijkstra na Pr&aacute;tica</h1>
+                    <p>O algoritmo usa uma fila de prioridades <strong>Q</strong>, organizada pelo custo acumulado <strong>&lambda;(v)</strong>, que mede a dist&acirc;ncia da raiz at&eacute; cada v&eacute;rtice.</p>
                     <div class="code-panel">
                         <p><span class="code-accent">while</span> Q &ne; &empty;:</p>
                         <p>&nbsp;&nbsp;u = ExtractMin(Q)</p>
@@ -24,17 +24,12 @@
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&lambda;(v) = min(&lambda;(v), &lambda;(u) + w(u,v))</p>
                     </div>
                     <div class="highlight-box">
-                        <p>A cada iteração, o algoritmo escolhe o vértice mais promissor e relaxa as arestas adjacentes para atualizar os menores custos conhecidos.</p>
+                        <p>A cada itera&ccedil;&atilde;o, o algoritmo escolhe o v&eacute;rtice mais promissor e relaxa as arestas adjacentes para atualizar os menores custos conhecidos.</p>
                     </div>
                 </div>
                 <div class="image-content">
-                    <div class="visual-panel dynamic-object fit-visual">
-                        <div class="placeholder-figure">
-                            <span class="placeholder-tag">Placeholder de imagem</span>
-                            <h2>Fila ordenada pelo menor custo</h2>
-                            <p>Inserir uma imagem de fila de prioridades ordenando os vértices pelo menor custo acumulado &lambda;(v).</p>
-                            <span class="placeholder-note">A composição ideal destaca o vértice extraído primeiro.</span>
-                        </div>
+                    <div class="visual-panel dynamic-object fit-visual canvas-visual">
+                        <canvas id="dijkstra-priority-canvas" aria-label="Fila de prioridades do Dijkstra com extração e relaxamento"></canvas>
                     </div>
                 </div>
             </div>

@@ -331,8 +331,8 @@ body {
 .canvas-visual {
     padding: 0;
     background:
-        radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), transparent 35%),
-        linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+        radial-gradient(circle at top left, rgba(79, 70, 229, 0.05), transparent 32%),
+        linear-gradient(180deg, #fbfdff 0%, #f3f7ff 100%);
 }
 
 .canvas-visual canvas {
