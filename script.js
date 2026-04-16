@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const slidePages = [
+        "index.html",
         "slide_busca_comparacao.html",
         "slide_grafo.html",
         "slide_caminho_grafos.html",
@@ -12,12 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
         "slide_astar2.html",
         "slide_heuristica.html",
         "slide_direcionamento.html",
-        "slide_redes_densas.html"
+        "slide_redes_densas.html",
+        "fontes.html"
     ];
 
     function navigateToRelativeSlide(step) {
         const path = window.location.pathname;
-        const currentPage = path.substring(path.lastIndexOf('/') + 1) || "slide1.html";
+        const currentPage = path.substring(path.lastIndexOf('/') + 1) || "index.html";
         const currentIndex = slidePages.findIndex(page => currentPage === page || currentPage.includes(page));
 
         if (currentIndex === -1) return;

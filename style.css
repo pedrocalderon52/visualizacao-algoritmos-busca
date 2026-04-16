@@ -844,6 +844,110 @@ body {
     background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
 }
 
+.title-slide {
+    padding: 4rem 5rem;
+}
+
+.title-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.78fr);
+    gap: 3.5rem;
+    align-items: center;
+    height: calc(100% - 3.5rem);
+}
+
+.title-copy {
+    min-width: 0;
+}
+
+.title-copy h1 {
+    max-width: 920px;
+    margin-bottom: 1.6rem;
+    font-size: 5.6rem;
+    line-height: 0.98;
+    font-weight: 700;
+    letter-spacing: 0;
+    background: linear-gradient(135deg, #0f172a 0%, #4f46e5 72%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.title-copy p {
+    font-size: 1.65rem;
+    line-height: 1.4;
+    color: #475569;
+    font-weight: 600;
+}
+
+.title-graph {
+    height: min(58vh, 560px);
+    min-height: 360px;
+}
+
+.sources-slide {
+    padding: 4rem 5rem;
+}
+
+.sources-layout {
+    height: calc(100% - 3.5rem);
+    display: flex;
+    align-items: center;
+}
+
+.sources-slide .text-content {
+    width: min(100%, 1120px);
+}
+
+.sources-slide h1 {
+    margin-bottom: 1.75rem;
+}
+
+.sources-list {
+    list-style: none;
+    display: grid;
+    gap: 1.05rem;
+    counter-reset: sources;
+}
+
+.sources-list li {
+    position: relative;
+    padding: 1rem 1.25rem 1rem 3.5rem;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    color: #475569;
+    font-size: 1.03rem;
+    line-height: 1.45;
+}
+
+.sources-list li::before {
+    counter-increment: sources;
+    content: counter(sources);
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.sources-list a {
+    color: var(--accent-color);
+    overflow-wrap: anywhere;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.sources-list a:hover {
+    text-decoration: underline;
+}
+
 .dense-compare-panel {
     padding: 1.1rem;
 }
@@ -1049,6 +1153,17 @@ body {
     color: #64748b;
 }
 
+.historical-image {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    object-fit: contain;
+    background: #ffffff;
+    box-shadow: 0 24px 40px rgba(15, 23, 42, 0.08);
+}
+
 .controls {
     position: absolute;
     bottom: 2rem;
@@ -1209,6 +1324,38 @@ body {
         bottom: 1.25rem;
         letter-spacing: 2px;
     }
+
+    .title-slide,
+    .sources-slide {
+        padding: 2.5rem 1.75rem 4.5rem;
+    }
+
+    .title-layout,
+    .sources-layout {
+        height: auto;
+    }
+
+    .title-layout {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .title-copy h1 {
+        font-size: 3.35rem;
+    }
+
+    .title-copy p {
+        font-size: 1.35rem;
+    }
+
+    .title-graph {
+        height: 42vh;
+        min-height: 320px;
+    }
+
+    .sources-list li {
+        font-size: 0.98rem;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1233,5 +1380,31 @@ body {
 
     .placeholder-figure h2 {
         font-size: 1.45rem;
+    }
+
+    .title-copy h1 {
+        font-size: 2.55rem;
+    }
+
+    .title-copy p {
+        font-size: 1.18rem;
+    }
+
+    .title-graph {
+        min-height: 280px;
+    }
+
+    .sources-list {
+        gap: 0.8rem;
+    }
+
+    .sources-list li {
+        padding: 0.85rem 0.95rem 0.85rem 3rem;
+        font-size: 0.9rem;
+    }
+
+    .sources-list li::before {
+        top: 0.85rem;
+        left: 0.85rem;
     }
 }
